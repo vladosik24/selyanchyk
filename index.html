@@ -1025,32 +1025,110 @@ async function init() {
   renderAll();
   startTimers();
 
+  // === AUTO-SAVE & EXIT SAVE ===
+  // Save every 30 sec
+  setInterval(() => { saveState(); saveRating(); }, 30000);
+
+  // Save on page close/hide
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'hidden') {
+      saveState();
+      saveRating();
+      saveToLocal();
+    }
+  });
+  window.addEventListener('beforeunload', () => {
+    saveState();
+    saveRating();
+    saveToLocal();
+  });
+  window.addEventListener('pagehide', () => {
+    saveState();
+    saveRating();
+    saveToLocal();
+  });
+
+  // Telegram-specific close event
+  if (window.Telegram && Telegram.WebApp) {
+    try {
+      Telegram.WebApp.onEvent('viewportChanged', (e) => {
+        if (!e.isStateStable) {
+          saveState();
+          saveRating();
+          saveToLocal();
+        }
+      });
+    } catch(e) {}
+  }
+
   setTimeout(() => {
     document.getElementById('loadingScreen').classList.add('hidden');
   }, 2000);
 }
 
-// ===== FIREBASE SYNC =====
-async function loadState() {
-  if (!firebaseReady || !db) return;
+// ===== FIREBASE SYNC + LOCAL BACKUP =====
+function saveToLocal() {
   try {
-    const snap = await get(ref(db, 'players/' + userId));
-    if (snap.exists()) {
-      const saved = snap.val();
+    const data = { ...state };
+    delete data.selectedSeed;
+    localStorage.setItem('selyanchyk_' + userId, JSON.stringify(data));
+  } catch(e) {}
+}
+
+function loadFromLocal() {
+  try {
+    const raw = localStorage.getItem('selyanchyk_' + userId);
+    if (raw) {
+      const saved = JSON.parse(raw);
       Object.assign(state, saved);
-      if (!state.farm) state.farm = Array(9).fill(null);
-      if (!state.inventory) state.inventory = {};
-      if (!state.animals) state.animals = {};
-      if (!state.transport) state.transport = {};
+      return true;
     }
-  } catch (e) { console.warn('Load error:', e); }
+  } catch(e) {}
+  return false;
+}
+
+async function loadState() {
+  let loaded = false;
+  
+  // 1. Try Firebase
+  if (firebaseReady && db) {
+    try {
+      const snap = await get(ref(db, 'players/' + userId));
+      if (snap.exists()) {
+        const saved = snap.val();
+        Object.assign(state, saved);
+        loaded = true;
+      }
+    } catch (e) { console.warn('Firebase load error:', e); }
+  }
+  
+  // 2. Fallback to localStorage
+  if (!loaded) {
+    loaded = loadFromLocal();
+    if (loaded) console.log('Loaded from localStorage');
+  }
+  
+  // Ensure defaults
+  if (!state.farm) state.farm = Array(9).fill(null);
+  if (!state.inventory) state.inventory = {};
+  if (!state.animals) state.animals = {};
+  if (!state.transport) state.transport = {};
+  
+  // Backup to local
+  saveToLocal();
 }
 
 function saveState() {
-  if (!firebaseReady || !db) return;
   const data = { ...state };
   delete data.selectedSeed;
-  set(ref(db, 'players/' + userId), data).catch(e => console.warn('Save error:', e));
+  
+  // Always save to localStorage
+  saveToLocal();
+  
+  // Save to Firebase if available
+  if (firebaseReady && db) {
+    set(ref(db, 'players/' + userId), data).catch(e => console.warn('Save error:', e));
+  }
 }
 
 function saveRating() {
