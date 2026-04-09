@@ -1574,6 +1574,16 @@ function haptic(type) {
   } catch(e) {}
 }
 
+// ===== EXPOSE TO GLOBAL (module scope fix) =====
+window.switchTab = switchTab;
+window.setRatingTab = setRatingTab;
+window.closeModal = closeModal;
+window.buyItem = buyItem;
+window.buyTransport = buyTransport;
+window.buyAnimal = buyAnimal;
+window.sellItem = sellItem;
+window.showToast = showToast;
+
 // ===== START =====
 init();
 </script>
