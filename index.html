@@ -904,17 +904,19 @@ body::before {
   <div class="modal" id="modalContent"></div>
 </div>
 
-<script>
-// ===== FIREBASE CONFIG =====
-// ЗАМІНИ НА СВОЇ ДАНІ FIREBASE
+<script type="module">
+// ===== FIREBASE (ES Module) =====
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getDatabase, ref, set, get, query, orderByChild, limitToLast } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
 const FIREBASE_CONFIG = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT.firebaseapp.com",
-  databaseURL: "https://YOUR_PROJECT-default-rtdb.firebaseio.com",
-  projectId: "YOUR_PROJECT",
-  storageBucket: "YOUR_PROJECT.appspot.com",
-  messagingSenderId: "000000000000",
-  appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyCTRvSagGpRnkBs6nBLcE5HAoLR8gkljYI",
+  authDomain: "selyanchyk.firebaseapp.com",
+  databaseURL: "https://selyanchyk-default-rtdb.firebaseio.com",
+  projectId: "selyanchyk",
+  storageBucket: "selyanchyk.firebasestorage.app",
+  messagingSenderId: "739361564137",
+  appId: "1:739361564137:web:571be77b86b36376745778"
 };
 
 // ===== GAME DATA =====
@@ -1009,19 +1011,13 @@ async function init() {
   
   if (!userId) userId = 'test_' + Date.now();
 
-  // Init Firebase
+  // Init Firebase (ES module)
   try {
-    await loadScript('https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js');
-    await loadScript('https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js');
-    
-    if (FIREBASE_CONFIG.apiKey !== 'YOUR_API_KEY') {
-      firebase.initializeApp(FIREBASE_CONFIG);
-      db = firebase.database();
-      firebaseReady = true;
-      await loadState();
-    } else {
-      console.log('Firebase не налаштований, працюємо локально');
-    }
+    const app = initializeApp(FIREBASE_CONFIG);
+    db = getDatabase(app);
+    firebaseReady = true;
+    console.log('Firebase ready!');
+    await loadState();
   } catch (e) {
     console.warn('Firebase init error:', e);
   }
@@ -1034,21 +1030,11 @@ async function init() {
   }, 2000);
 }
 
-function loadScript(src) {
-  return new Promise((resolve, reject) => {
-    const s = document.createElement('script');
-    s.src = src;
-    s.onload = resolve;
-    s.onerror = reject;
-    document.head.appendChild(s);
-  });
-}
-
 // ===== FIREBASE SYNC =====
 async function loadState() {
   if (!firebaseReady || !db) return;
   try {
-    const snap = await db.ref('players/' + userId).once('value');
+    const snap = await get(ref(db, 'players/' + userId));
     if (snap.exists()) {
       const saved = snap.val();
       Object.assign(state, saved);
@@ -1064,13 +1050,13 @@ function saveState() {
   if (!firebaseReady || !db) return;
   const data = { ...state };
   delete data.selectedSeed;
-  db.ref('players/' + userId).set(data).catch(e => console.warn('Save error:', e));
+  set(ref(db, 'players/' + userId), data).catch(e => console.warn('Save error:', e));
 }
 
 function saveRating() {
   if (!firebaseReady || !db) return;
   const name = document.getElementById('playerName').textContent;
-  db.ref('rating/' + userId).set({
+  set(ref(db, 'rating/' + userId), {
     name: name,
     level: state.level,
     xp: state.xp,
@@ -1388,11 +1374,14 @@ async function renderRating(type = 'players') {
   let players = [];
   if (firebaseReady && db) {
     try {
-      const snap = await db.ref('rating').orderByChild('xp').limitToLast(20).once('value');
-      snap.forEach(child => {
-        players.push({ id: child.key, ...child.val() });
-      });
-      players.reverse();
+      const ratingQuery = query(ref(db, 'rating'), orderByChild('xp'), limitToLast(20));
+      const snap = await get(ratingQuery);
+      if (snap.exists()) {
+        snap.forEach(child => {
+          players.push({ id: child.key, ...child.val() });
+        });
+        players.reverse();
+      }
     } catch (e) { console.warn('Rating load error:', e); }
   }
 
