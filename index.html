@@ -3,25 +3,20 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0">
-<title>🌾 Селянчик v2.1</title>
+<title>🌾 Селянчик</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@600;700&family=Nunito:wght@600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@600;700&family=Nunito:wght@600;700;800&display=swap');
 
 :root {
-  --bg: #1a3a2a;
-  --card: #2d5a3f;
-  --wood: #5a3a1e;
-  --wood2: #7a5230;
+  --bg: #1b3a28;
+  --card: #2a5238;
+  --wood: #6b4226;
+  --wood-light: #8b5a2b;
   --accent: #FFD93D;
-  --orange: #FF8C42;
   --green: #6BCB77;
-  --blue: #4FC3F7;
-  --red: #FF6B6B;
-  --purple: #B388FF;
   --text: #fff;
   --dim: #a8d5ba;
-  --shadow: 0 4px 18px rgba(0,0,0,0.35);
 }
 
 * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
@@ -32,379 +27,392 @@ body {
   color: var(--text);
   min-height: 100vh;
   overflow-x: hidden;
-  padding-bottom: 92px;
+  padding-bottom: 88px;
 }
 
-body::before {
-  content:'';
-  position:fixed; inset:0;
-  background:
-    radial-gradient(ellipse at 15% 15%, rgba(107,203,119,0.12) 0%, transparent 50%),
-    radial-gradient(ellipse at 85% 80%, rgba(255,217,61,0.08) 0%, transparent 50%);
-  pointer-events:none; z-index:0;
-}
-
-/* ===== HEADER ===== */
 .header {
-  position:sticky; top:0; z-index:100;
+  position: sticky; top: 0; z-index: 100;
   background: linear-gradient(135deg, #1e4d32, #2d6b48);
-  padding: 10px 12px 12px;
-  display:flex; align-items:center; justify-content:space-between;
-  box-shadow: 0 4px 22px rgba(0,0,0,0.45);
+  padding: 10px 14px 12px;
+  display: flex; align-items: center; justify-content: space-between;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.45);
   border-bottom: 3px solid var(--accent);
 }
-.header-left { display:flex; align-items:center; gap:10px; }
+.header-left { display: flex; align-items: center; gap: 10px; }
 .avatar {
-  width:44px; height:44px; border-radius:50%;
+  width: 44px; height: 44px; border-radius: 50%;
   background: linear-gradient(145deg, #FFD93D, #FF8C42);
-  display:flex; align-items:center; justify-content:center;
-  font-size:24px; border:2px solid rgba(255,255,255,0.4);
-  box-shadow: 0 2px 10px rgba(255,217,61,0.4);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px; border: 2px solid rgba(255,255,255,0.4);
+  box-shadow: 0 2px 10px rgba(255,217,61,0.35);
 }
-.pinfo h1 { font-family:'Comfortaa',sans-serif; font-size:15px; font-weight:700; line-height:1.15; }
-.pinfo .lvl { font-size:11px; color:var(--accent); font-weight:700; }
-.header-right { display:flex; align-items:center; gap:8px; }
+.player-info h1 { font-family: 'Comfortaa', sans-serif; font-size: 15px; font-weight: 700; line-height: 1.15; }
+.player-info .level { font-size: 11px; color: var(--accent); font-weight: 700; }
+.header-right { display: flex; align-items: center; gap: 8px; }
 .coins {
-  background:rgba(0,0,0,0.35); padding:6px 13px; border-radius:20px;
-  font-weight:800; font-size:15px; color:var(--accent);
-  border:1px solid rgba(255,217,61,0.3); display:flex; align-items:center; gap:5px;
+  background: rgba(0,0,0,0.35); padding: 6px 13px; border-radius: 20px;
+  font-weight: 800; font-size: 15px; color: var(--accent);
+  border: 1px solid rgba(255,217,61,0.3);
+  display: flex; align-items: center; gap: 5px;
 }
-.icon-btn {
-  width:36px; height:36px; border-radius:50%;
-  background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.15);
-  font-size:17px; display:flex; align-items:center; justify-content:center;
-  cursor:pointer; color:#fff;
+.sound-btn {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.15);
+  font-size: 17px; display: flex; align-items: center; justify-content: center;
+  cursor: pointer; color: #fff;
 }
 
-/* ===== RESOURCES ===== */
-.resources {
-  display:flex; gap:7px; padding:9px 12px; overflow-x:auto; position:relative; z-index:1;
-}
-.resources::-webkit-scrollbar { display:none; }
+.resources { display: flex; gap: 8px; padding: 10px 12px; overflow-x: auto; }
+.resources::-webkit-scrollbar { display: none; }
 .res {
-  flex-shrink:0; display:flex; align-items:center; gap:4px;
-  background:rgba(0,0,0,0.28); padding:5px 11px; border-radius:14px;
-  font-size:13px; font-weight:700; border:1px solid rgba(255,255,255,0.07);
+  flex-shrink: 0; display: flex; align-items: center; gap: 5px;
+  background: rgba(0,0,0,0.28); padding: 5px 12px; border-radius: 14px;
+  font-size: 13px; font-weight: 700; border: 1px solid rgba(255,255,255,0.07);
 }
 
-/* ===== CONTENT ===== */
-.content { padding:4px 12px 16px; position:relative; z-index:1; }
-.section { display:none; }
-.section.active { display:block; animation:fadeIn .25s ease; }
-@keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+.content { padding: 6px 12px 20px; position: relative; z-index: 1; }
+.section { display: none; }
+.section.active { display: block; animation: fadeIn 0.25s ease; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
-.stitle {
-  font-family:'Comfortaa',sans-serif; font-size:17px; font-weight:700;
-  margin:4px 0 11px; display:flex; align-items:center; justify-content:space-between;
+.section-title {
+  font-family: 'Comfortaa', sans-serif; font-size: 17px; font-weight: 700;
+  margin: 4px 0 12px; display: flex; align-items: center; justify-content: space-between;
 }
 
-/* ===== FARM ===== */
-.farm-grid {
-  display:grid; grid-template-columns:repeat(3,1fr); gap:9px; margin-bottom:13px;
-}
+.farm-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 14px; }
 .plot {
-  aspect-ratio:1; border-radius:14px; display:flex; flex-direction:column;
-  align-items:center; justify-content:center; cursor:pointer; position:relative;
-  overflow:hidden; transition:transform .14s;
-  box-shadow: var(--shadow), inset 0 -3px 6px rgba(0,0,0,0.25);
+  aspect-ratio: 1; border-radius: 14px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  cursor: pointer; position: relative; overflow: hidden; transition: transform 0.15s;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.35), inset 0 -3px 6px rgba(0,0,0,0.25);
 }
-.plot:active { transform:scale(0.95); }
-.plot.empty {
-  background:linear-gradient(160deg,#5a3a1e,#3d2814); border:3px solid #7a5230;
-}
-.plot.empty::after { content:'+'; font-size:30px; color:rgba(255,255,255,0.28); font-weight:300; }
-.plot.locked {
-  background:#151515; border:3px dashed #333; opacity:0.55;
-}
-.plot.locked::after { content:'🔒'; font-size:22px; }
-.plot.growing, .plot.ready {
-  background:linear-gradient(160deg,#4a2f16,#6b4226); border:3px solid #8b5a2b;
-}
+.plot:active { transform: scale(0.96); }
+.plot.empty { background: linear-gradient(160deg, #5a3a1e, #3d2814); border: 3px solid #7a5230; }
+.plot.empty::after { content: '+'; font-size: 32px; color: rgba(255,255,255,0.28); font-weight: 300; }
+.plot.locked { background: #1a1a1a; border: 3px dashed #333; opacity: 0.55; }
+.plot.locked::after { content: '🔒'; font-size: 22px; }
+.plot.growing, .plot.ready { background: linear-gradient(160deg, #4a2f16, #6b4226); border: 3px solid #8b5a2b; }
 .plot.ready {
-  border-color:#6BCB77;
-  box-shadow:0 0 18px rgba(107,203,119,0.45), var(--shadow);
-  animation:pulse 1.5s ease-in-out infinite;
+  border-color: #6BCB77;
+  box-shadow: 0 0 18px rgba(107,203,119,0.45), 0 4px 14px rgba(0,0,0,0.35);
+  animation: pulse 1.6s ease-in-out infinite;
 }
 @keyframes pulse {
-  0%,100%{box-shadow:0 0 12px rgba(107,203,119,0.3)}
-  50%{box-shadow:0 0 22px rgba(107,203,119,0.55)}
+  0%,100% { box-shadow: 0 0 12px rgba(107,203,119,0.35); }
+  50% { box-shadow: 0 0 22px rgba(107,203,119,0.6); }
 }
-.plot .em { font-size:36px; filter:drop-shadow(0 3px 4px rgba(0,0,0,0.45)); line-height:1; }
-.plot .tm {
-  font-size:10px; font-weight:800; margin-top:3px;
-  background:rgba(0,0,0,0.5); padding:2px 7px; border-radius:8px; color:var(--accent);
+.plot .emoji { font-size: 38px; filter: drop-shadow(0 3px 4px rgba(0,0,0,0.45)); line-height: 1; }
+.plot .timer {
+  font-size: 10px; font-weight: 800; margin-top: 4px;
+  background: rgba(0,0,0,0.5); padding: 2px 8px; border-radius: 8px; color: var(--accent);
 }
-.plot.ready .tm { color:#6BCB77; }
+.plot.ready .timer { color: #6BCB77; }
 
-/* ===== SEED PANEL ===== */
 .seed-panel {
-  background:linear-gradient(180deg,#2d5a3f,#234a32); border-radius:16px;
-  padding:12px; border:1px solid rgba(255,255,255,0.08); box-shadow:var(--shadow);
+  background: linear-gradient(180deg, #2d5a3f, #234a32); border-radius: 16px; padding: 12px;
+  border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 4px 16px rgba(0,0,0,0.3);
 }
-.seed-panel h3 { font-family:'Comfortaa',sans-serif; font-size:13px; color:var(--accent); margin-bottom:9px; }
-.seed-list { display:flex; gap:7px; overflow-x:auto; }
-.seed-list::-webkit-scrollbar { display:none; }
+.seed-panel h3 { font-family: 'Comfortaa', sans-serif; font-size: 13px; color: var(--accent); margin-bottom: 10px; }
+.seed-list { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 2px; }
+.seed-list::-webkit-scrollbar { display: none; }
 .seed {
-  flex-shrink:0; width:66px; background:rgba(0,0,0,0.28); border-radius:13px;
-  padding:7px 3px; text-align:center; cursor:pointer; border:2px solid transparent; transition:.15s;
+  flex-shrink: 0; width: 68px; background: rgba(0,0,0,0.28); border-radius: 14px;
+  padding: 8px 4px; text-align: center; cursor: pointer; border: 2px solid transparent; transition: 0.15s;
 }
-.seed.selected { border-color:var(--accent); background:rgba(255,217,61,0.16); box-shadow:0 0 10px rgba(255,217,61,0.18); }
-.seed.locked { opacity:0.4; }
-.seed .e { font-size:25px; display:block; }
-.seed .n { font-size:9px; font-weight:700; margin-top:2px; display:block; }
-.seed .p { font-size:10px; color:var(--accent); }
+.seed.selected { border-color: var(--accent); background: rgba(255,217,61,0.18); box-shadow: 0 0 12px rgba(255,217,61,0.2); }
+.seed.locked { opacity: 0.4; }
+.seed .e { font-size: 26px; display: block; }
+.seed .n { font-size: 10px; font-weight: 700; margin-top: 2px; }
+.seed .p { font-size: 10px; color: var(--accent); }
 
-/* ===== TABS / CARDS ===== */
-.tabs { display:flex; gap:6px; margin-bottom:11px; overflow-x:auto; }
-.tabs::-webkit-scrollbar { display:none; }
+.tabs { display: flex; gap: 6px; margin-bottom: 12px; overflow-x: auto; }
+.tabs::-webkit-scrollbar { display: none; }
 .tab {
-  flex-shrink:0; padding:7px 13px; border-radius:12px; background:rgba(0,0,0,0.28);
-  font-size:13px; font-weight:700; cursor:pointer; border:2px solid transparent; white-space:nowrap;
+  flex-shrink: 0; padding: 7px 14px; border-radius: 12px; background: rgba(0,0,0,0.28);
+  font-size: 13px; font-weight: 700; cursor: pointer; border: 2px solid transparent; white-space: nowrap;
 }
-.tab.active { background:linear-gradient(135deg,#45a55a,#2d7a4f); border-color:rgba(255,255,255,0.15); }
+.tab.active { background: linear-gradient(135deg, #45a55a, #2d7a4f); border-color: rgba(255,255,255,0.15); }
 
 .card {
-  background:var(--card); border-radius:14px; padding:12px; margin-bottom:8px;
-  display:flex; align-items:center; gap:11px;
-  border:1px solid rgba(255,255,255,0.06); box-shadow:0 3px 12px rgba(0,0,0,0.25);
+  background: var(--card); border-radius: 14px; padding: 12px; margin-bottom: 9px;
+  display: flex; align-items: center; gap: 12px;
+  border: 1px solid rgba(255,255,255,0.06); box-shadow: 0 3px 12px rgba(0,0,0,0.25);
 }
-.card-ico {
-  width:48px; height:48px; background:rgba(0,0,0,0.3); border-radius:12px;
-  display:flex; align-items:center; justify-content:center; font-size:26px; flex-shrink:0;
+.card-icon {
+  width: 48px; height: 48px; background: rgba(0,0,0,0.3); border-radius: 12px;
+  display: flex; align-items: center; justify-content: center; font-size: 26px; flex-shrink: 0;
 }
-.card-info { flex:1; min-width:0; }
-.card-info h4 { font-size:14px; font-weight:700; }
-.card-info p { font-size:11px; color:var(--dim); margin-top:2px; }
-.btn-p {
-  background:linear-gradient(135deg,#FFD93D,#FF8C42); color:#1a1a1a;
-  padding:6px 12px; border-radius:10px; font-size:13px; font-weight:800;
-  border:none; cursor:pointer; white-space:nowrap;
+.card-info { flex: 1; min-width: 0; }
+.card-info h4 { font-size: 14px; font-weight: 700; }
+.card-info p { font-size: 11px; color: var(--dim); margin-top: 2px; }
+.btn-price {
+  background: linear-gradient(135deg, #FFD93D, #FF8C42); color: #1a1a1a;
+  padding: 6px 12px; border-radius: 10px; font-size: 13px; font-weight: 800;
+  border: none; cursor: pointer; white-space: nowrap;
 }
-.btn-p:disabled { background:#555; color:#aaa; cursor:default; }
 
-/* ===== ANIMALS ===== */
-.animals-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:9px; }
+.animals-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
 .animal {
-  background:var(--card); border-radius:14px; padding:13px 8px; text-align:center;
-  border:1px solid rgba(255,255,255,0.06); cursor:pointer; box-shadow:0 3px 12px rgba(0,0,0,0.25);
+  background: var(--card); border-radius: 14px; padding: 14px 10px; text-align: center;
+  border: 1px solid rgba(255,255,255,0.06); cursor: pointer; box-shadow: 0 3px 12px rgba(0,0,0,0.25);
 }
-.animal .e { font-size:40px; display:block; margin-bottom:3px; animation:bounce 2.2s ease-in-out infinite; }
-@keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-5px)} }
-.animal.locked { opacity:0.45; }
-.animal.locked .e { animation:none; filter:grayscale(.7); }
-.animal h4 { font-size:13px; }
-.animal .st { font-size:11px; color:var(--green); margin-top:2px; }
-.animal .pr { font-size:11px; color:var(--accent); margin-top:3px; }
+.animal .e { font-size: 42px; display: block; margin-bottom: 4px; animation: bounce 2.2s ease-in-out infinite; }
+@keyframes bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+.animal.locked { opacity: 0.45; }
+.animal.locked .e { animation: none; filter: grayscale(0.7); }
+.animal h4 { font-size: 13px; }
+.animal .st { font-size: 11px; color: var(--green); margin-top: 2px; }
+.animal .pr { font-size: 11px; color: var(--accent); margin-top: 3px; }
 
-/* ===== RATING ===== */
 .rating-item {
-  background:var(--card); border-radius:12px; padding:10px 12px;
-  display:flex; align-items:center; gap:10px; margin-bottom:7px;
-  border:1px solid rgba(255,255,255,0.05);
+  background: var(--card); border-radius: 12px; padding: 11px 13px;
+  display: flex; align-items: center; gap: 11px; margin-bottom: 7px;
+  border: 1px solid rgba(255,255,255,0.05);
 }
-.rating-item.me { border:2px solid var(--accent); background:linear-gradient(135deg,#3a5a2a,#2d5a3f); }
-.rating-item.t1 { border-left:4px solid #FFD93D; }
-.rating-item.t2 { border-left:4px solid #C0C0C0; }
-.rating-item.t3 { border-left:4px solid #CD7F32; }
+.rating-item.me { border: 2px solid var(--accent); background: linear-gradient(135deg, #3a5a2a, #2d5a3f); }
+.rating-item.top1 { border-left: 4px solid #FFD93D; }
+.rating-item.top2 { border-left: 4px solid #C0C0C0; }
+.rating-item.top3 { border-left: 4px solid #CD7F32; }
 .pos {
-  width:26px; height:26px; border-radius:50%; background:rgba(0,0,0,0.3);
-  display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:800; flex-shrink:0;
+  width: 26px; height: 26px; border-radius: 50%; background: rgba(0,0,0,0.3);
+  display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800;
 }
-.rating-item.t1 .pos { background:#FFD93D; color:#1a1a1a; }
-.rating-item.t2 .pos { background:#C0C0C0; color:#1a1a1a; }
-.rating-item.t3 .pos { background:#CD7F32; color:#fff; }
-.r-name { flex:1; font-weight:600; font-size:14px; }
-.r-score { font-weight:800; color:var(--accent); font-size:13px; }
+.rating-item.top1 .pos { background: #FFD93D; color: #1a1a1a; }
+.rating-item.top2 .pos { background: #C0C0C0; color: #1a1a1a; }
+.rating-item.top3 .pos { background: #CD7F32; color: #fff; }
+.r-name { flex: 1; font-weight: 600; font-size: 14px; }
+.r-score { font-weight: 800; color: var(--accent); font-size: 13px; }
 
-/* ===== NAV ===== */
 .nav {
-  position:fixed; bottom:0; left:0; right:0; z-index:100;
-  background:linear-gradient(180deg,rgba(15,36,24,0.97),#0a1a12);
-  display:flex; padding:7px 3px 13px;
-  border-top:2px solid rgba(107,203,119,0.18); box-shadow:0 -4px 20px rgba(0,0,0,0.5);
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
+  background: linear-gradient(180deg, rgba(15,36,24,0.97), #0a1a12);
+  display: flex; padding: 7px 4px 12px;
+  border-top: 2px solid rgba(107,203,119,0.18); box-shadow: 0 -4px 20px rgba(0,0,0,0.5);
 }
 .nav-item {
-  flex:1; display:flex; flex-direction:column; align-items:center; gap:2px;
-  padding:5px 1px; border-radius:12px; cursor:pointer; color:var(--dim);
-  border:none; background:none; font-family:inherit;
+  flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px;
+  padding: 5px 2px; border-radius: 12px; cursor: pointer; color: var(--dim);
+  border: none; background: none; font-family: inherit;
 }
-.nav-item.active { color:var(--accent); background:rgba(255,217,61,0.1); }
-.nav-item .ico { font-size:21px; }
-.nav-item .lbl { font-size:9px; font-weight:700; }
+.nav-item.active { color: var(--accent); background: rgba(255,217,61,0.1); }
+.nav-item .ico { font-size: 22px; }
+.nav-item .lbl { font-size: 9px; font-weight: 700; }
 
-/* ===== TOAST / MODAL ===== */
 .toast {
-  position:fixed; top:74px; left:50%; transform:translateX(-50%) translateY(-14px);
-  background:linear-gradient(135deg,#2d7a4f,#1a5c35); padding:10px 18px; border-radius:14px;
-  font-size:14px; font-weight:700; box-shadow:0 8px 28px rgba(0,0,0,0.5);
-  z-index:999; opacity:0; pointer-events:none; transition:.28s;
-  border:1px solid rgba(107,203,119,0.3); max-width:88vw; text-align:center;
+  position: fixed; top: 76px; left: 50%; transform: translateX(-50%) translateY(-16px);
+  background: linear-gradient(135deg, #2d7a4f, #1a5c35); padding: 10px 20px; border-radius: 14px;
+  font-size: 14px; font-weight: 700; box-shadow: 0 8px 28px rgba(0,0,0,0.5);
+  z-index: 999; opacity: 0; pointer-events: none; transition: 0.28s;
+  border: 1px solid rgba(107,203,119,0.3); max-width: 88vw; text-align: center;
 }
-.toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
 .modal-bg {
-  position:fixed; inset:0; background:rgba(0,0,0,0.72); z-index:200;
-  display:none; align-items:flex-end; justify-content:center; backdrop-filter:blur(3px);
+  position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 200;
+  display: none; align-items: flex-end; justify-content: center; backdrop-filter: blur(3px);
 }
-.modal-bg.open { display:flex; }
+.modal-bg.open { display: flex; }
 .modal {
-  background:linear-gradient(180deg,#2d5a3f,#1a3a2a); border-radius:20px 20px 0 0;
-  padding:18px 14px 28px; width:100%; max-width:420px; max-height:68vh; overflow-y:auto;
-  border-top:3px solid var(--accent); animation:slideUp .28s ease; position:relative;
+  background: linear-gradient(180deg, #2d5a3f, #1a3a2a); border-radius: 20px 20px 0 0;
+  padding: 18px 14px 28px; width: 100%; max-width: 420px; max-height: 65vh; overflow-y: auto;
+  border-top: 3px solid var(--accent); animation: slideUp 0.28s ease;
 }
-@keyframes slideUp { from{transform:translateY(100%)} to{transform:translateY(0)} }
-.modal h3 { font-family:'Comfortaa',sans-serif; font-size:17px; text-align:center; margin-bottom:14px; }
+@keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+.modal h3 { font-family: 'Comfortaa', sans-serif; font-size: 17px; text-align: center; margin-bottom: 14px; }
 
 .btn {
-  display:inline-flex; align-items:center; justify-content:center; gap:6px;
-  padding:10px 18px; border:none; border-radius:12px; font-family:inherit;
-  font-size:14px; font-weight:700; cursor:pointer;
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  padding: 10px 18px; border: none; border-radius: 12px;
+  font-family: inherit; font-size: 14px; font-weight: 700; cursor: pointer;
 }
-.btn-g { background:linear-gradient(135deg,#45a55a,#2d7a4f); color:#fff; }
-.btn-o { background:linear-gradient(135deg,#FF8C42,#FF6B6B); color:#fff; }
-.btn-full { width:100%; margin-top:8px; }
+.btn-green { background: linear-gradient(135deg, #45a55a, #2d7a4f); color: #fff; }
+.btn-orange { background: linear-gradient(135deg, #FF8C42, #FF6B6B); color: #fff; }
 
-/* ===== LOADING ===== */
 .loading {
-  position:fixed; inset:0; background:linear-gradient(160deg,#0d1f15,#1a3a2a);
-  z-index:9999; display:flex; flex-direction:column; align-items:center; justify-content:center;
-  transition:opacity .4s;
+  position: fixed; inset: 0; background: linear-gradient(160deg, #0d1f15, #1a3a2a);
+  z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  transition: opacity 0.4s;
 }
-.loading.hide { opacity:0; pointer-events:none; }
-.loading .em { font-size:56px; animation:bounce 1s ease-in-out infinite; }
-.loading .tt { font-family:'Comfortaa',sans-serif; font-size:22px; font-weight:700; margin-top:12px; color:var(--accent); }
-.loading .sub { margin-top:6px; font-size:13px; color:var(--dim); }
-.loading .bar { width:150px; height:5px; background:rgba(255,255,255,0.1); border-radius:3px; margin-top:14px; overflow:hidden; }
-.loading .bf {
-  height:100%; width:30%; background:linear-gradient(90deg,var(--green),var(--accent)); border-radius:3px;
-  animation:load 1.1s ease infinite;
-}
-@keyframes load {
-  0%{width:8%;margin-left:0} 50%{width:55%;margin-left:20%} 100%{width:8%;margin-left:90%}
-}
+.loading.hide { opacity: 0; pointer-events: none; }
+.loading .emoji { font-size: 56px; animation: bounce 1s ease-in-out infinite; }
+.loading .title { font-family: 'Comfortaa', sans-serif; font-size: 22px; font-weight: 700; margin-top: 12px; color: var(--accent); }
+.loading .sub { margin-top: 6px; font-size: 13px; color: var(--dim); }
+.loading .bar { width: 160px; height: 5px; background: rgba(255,255,255,0.1); border-radius: 3px; margin-top: 14px; overflow: hidden; }
+.loading .bar-fill { height: 100%; width: 30%; background: linear-gradient(90deg, var(--green), var(--accent)); border-radius: 3px; animation: load 1.2s ease infinite; }
+@keyframes load { 0% { width: 10%; margin-left: 0; } 50% { width: 60%; margin-left: 20%; } 100% { width: 10%; margin-left: 90%; } }
 
 .sync {
-  position:fixed; top:6px; right:8px; z-index:150; font-size:10px; font-weight:700;
-  padding:2px 7px; border-radius:8px; background:rgba(0,0,0,0.4); color:var(--dim); pointer-events:none;
+  position: fixed; top: 6px; right: 8px; z-index: 150; font-size: 10px; font-weight: 700;
+  padding: 2px 7px; border-radius: 8px; background: rgba(0,0,0,0.4); color: var(--dim); pointer-events: none;
 }
-.sync.ok { color:var(--green); }
-.sync.bad { color:#FF8C42; }
+.sync.ok { color: var(--green); }
+.sync.bad { color: #FF8C42; }
 
-.inv-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:7px; margin-top:10px; }
+.inv-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 10px; }
 .inv-slot {
-  aspect-ratio:1; background:rgba(0,0,0,0.28); border-radius:12px;
-  display:flex; flex-direction:column; align-items:center; justify-content:center;
-  border:2px solid rgba(255,255,255,0.06); position:relative; cursor:pointer;
+  aspect-ratio: 1; background: rgba(0,0,0,0.28); border-radius: 12px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  border: 2px solid rgba(255,255,255,0.06); position: relative; cursor: pointer;
 }
-.inv-slot .e { font-size:24px; }
+.inv-slot .e { font-size: 24px; }
 .inv-slot .c {
-  position:absolute; bottom:3px; right:4px; font-size:10px; font-weight:800;
-  background:rgba(0,0,0,0.55); padding:1px 5px; border-radius:6px; color:var(--accent);
+  position: absolute; bottom: 3px; right: 4px; font-size: 10px; font-weight: 800;
+  background: rgba(0,0,0,0.55); padding: 1px 5px; border-radius: 6px; color: var(--accent);
 }
 
 .daily {
-  background:linear-gradient(135deg,#5a3a1a,#3d2a10); border:2px solid var(--accent);
-  border-radius:14px; padding:11px; margin-bottom:11px; text-align:center; cursor:pointer;
+  background: linear-gradient(135deg, #5a3a1a, #3d2a10); border: 2px solid var(--accent);
+  border-radius: 14px; padding: 11px; margin-bottom: 12px; text-align: center; cursor: pointer;
 }
-.daily h4 { color:var(--accent); font-size:14px; }
-.daily p { font-size:12px; color:var(--dim); margin-top:3px; }
+.daily h4 { color: var(--accent); font-size: 14px; }
+.daily p { font-size: 12px; color: var(--dim); margin-top: 3px; }
 
-.progress { height:5px; background:rgba(0,0,0,0.35); border-radius:3px; margin-top:5px; overflow:hidden; }
-.progress > div { height:100%; background:linear-gradient(90deg,var(--green),var(--accent)); border-radius:3px; transition:width .35s; }
+.progress { height: 5px; background: rgba(0,0,0,0.35); border-radius: 3px; margin-top: 5px; overflow: hidden; }
+.progress > div { height: 100%; background: linear-gradient(90deg, var(--green), var(--accent)); border-radius: 3px; }
+.avatar img{width:100%;height:100%;border-radius:50%;object-fit:cover}
+.plot .lv{position:absolute;top:3px;left:4px;font-size:9px;font-weight:800;background:rgba(0,0,0,.6);padding:1px 5px;border-radius:6px;color:var(--accent);z-index:2}
+.banner{background:linear-gradient(135deg,#7a3d12,#b5651d);border:2px solid var(--accent);border-radius:14px;padding:9px;margin-bottom:12px;text-align:center;font-size:13px;font-weight:700}
+.rating-item img{width:26px;height:26px;border-radius:50%;object-fit:cover}
+.btn-price:disabled{opacity:.5}
 
-.ver { position:fixed; bottom:96px; right:8px; font-size:9px; color:rgba(255,255,255,0.2); z-index:50; }
-
-.clan-box {
-  background:linear-gradient(135deg,#2a1a4a,#3d2560); border-radius:16px; padding:18px;
-  text-align:center; border:1px solid rgba(179,136,255,0.2); margin-bottom:10px;
-}
+/* ===== SKIN: дерево + золото + трава ===== */
+:root{--gold:#f2c14e;--soil-img:none;--grass-img:none;--wood-img:none}
+/* Свої картинки: заміни none на url(soil.png) / url(grass.png) / url(wood.png) */
+body{background:linear-gradient(180deg,#0e3a2a,#082a1d)}
+.header{margin:8px 8px 0;padding:10px 12px;border:3px solid var(--gold);border-radius:22px;
+  background:var(--wood-img),repeating-linear-gradient(95deg,rgba(0,0,0,.07) 0 3px,transparent 3px 9px),linear-gradient(180deg,#8f5e2c,#5c3818);
+  box-shadow:0 0 0 2px #3b2208,0 6px 18px rgba(0,0,0,.5),inset 0 2px 0 rgba(255,255,255,.25)}
+.avatar{width:58px;height:58px;overflow:hidden;border:3px solid var(--gold);background:radial-gradient(circle at 40% 30%,#ffe08a,#e89a2c);box-shadow:0 0 0 2px #7a4f12,0 3px 10px rgba(0,0,0,.5)}
+.player-info h1{font-size:16px;text-transform:uppercase;letter-spacing:.5px;text-shadow:0 2px 0 rgba(0,0,0,.5)}
+.player-info h1::before{content:'👑 '}
+.coins{padding:5px 14px 5px 6px;gap:8px;border:2px solid #a8742f;border-radius:30px;background:linear-gradient(180deg,#4a2f14,#2f1d0b)}
+.coin-ico{width:38px;height:38px;border-radius:50%;font-size:0;display:flex;align-items:center;justify-content:center;
+  background:radial-gradient(circle at 35% 30%,#fff2a8,#f2b520 55%,#b97a10);box-shadow:0 2px 6px rgba(0,0,0,.5)}
+.coin-ico::after{content:'';width:20px;height:20px;border:3px solid rgba(150,90,10,.55);border-radius:50%}
+.coins small{display:block;font-size:10px;color:#e8c98a;font-weight:700;line-height:1.1}
+.coins b{font-size:20px;color:#ffd75e;line-height:1.1}
+.resources{padding:10px 10px 6px;gap:8px}
+.res{padding:6px 8px 6px 14px;gap:8px;font-size:15px;border:2px solid #1f7a63;border-radius:26px;background:linear-gradient(180deg,#0f4a3a,#0a3329)}
+.res.big{flex:1 0 auto;justify-content:space-between;font-size:16px}
+.res .plus{width:30px;height:30px;border:none;border-radius:50%;color:#fff;font-size:20px;font-weight:800;line-height:1;
+  background:radial-gradient(circle at 40% 30%,#8be06a,#2e9a3a);box-shadow:0 2px 0 #14561d}
+#sec-farm{position:relative;margin:0 -12px;padding:10px 12px 14px;
+  background:var(--grass-img),radial-gradient(circle at 12% 22%,#fff 0 2px,transparent 3px),radial-gradient(circle at 93% 64%,#fff 0 2px,transparent 3px),
+  radial-gradient(ellipse at 50% 0%,#86dc5e,transparent 60%),linear-gradient(180deg,#58b843,#2f8a2c 60%,#25702a)}
+.farm-title{justify-content:flex-start;gap:10px;position:relative;min-height:56px}
+.plank{padding:6px 18px 6px 12px;font-size:20px;text-shadow:0 2px 0 rgba(0,0,0,.45);border:3px solid #c28a3e;border-radius:14px;
+  background:linear-gradient(180deg,#9a6530,#6b4220);box-shadow:0 3px 8px rgba(0,0,0,.4)}
+#plots{padding:2px 8px;border-radius:10px;background:rgba(0,0,0,.35)}
+.barn{position:absolute;top:-8px;right:0;width:96px;pointer-events:none}
+.plot{border-radius:10px;box-shadow:0 5px 12px rgba(0,0,0,.4)}
+.plot.empty,.plot.growing,.plot.ready{border:7px solid transparent;
+  background:var(--soil-img) padding-box,radial-gradient(ellipse at 30% 30%,rgba(255,255,255,.08),transparent 50%) padding-box,
+  radial-gradient(circle at 70% 70%,#5a3a1c,#3a2410) padding-box,repeating-linear-gradient(90deg,#d29a4f 0 16px,#8f5a24 16px 18px) border-box}
+.plot.ready{box-shadow:0 0 0 2px #6BCB77,0 0 18px rgba(107,203,119,.6)}
+.plot.locked{border:7px dashed rgba(255,255,255,.15);background:rgba(0,0,0,.45)}
+.plot.empty::after{content:'+';width:46px;height:46px;display:flex;align-items:center;justify-content:center;
+  font-size:30px;font-weight:400;color:rgba(255,230,180,.75);border:2px solid rgba(255,230,180,.45);border-radius:50%}
+.seed-panel{border:3px solid #c28a3e;border-radius:18px;background:linear-gradient(180deg,#8a5a2b,#5c3818)}
+.seed{border:2px solid #1f7a63;border-radius:16px;background:linear-gradient(180deg,#0f4a3a,#0a3329)}
+.seed.selected{border-color:var(--gold);box-shadow:0 0 12px rgba(242,193,78,.5)}
+.nav{border-top:2px solid #1f7a63;background:linear-gradient(180deg,#0f3a2c,#07241a)}
+.nav-item{border:2px solid transparent}
+.nav-item.active{color:#fff;border-color:#8bd36a;background:linear-gradient(180deg,#3f9a3a,#1f5f2a)}
+.card,.animal,.rating-item{border:2px solid #9a6b32;background:linear-gradient(180deg,#6b4a26,#4a3018)}
+.rating-item.me{border-color:var(--gold)}
+.tab.active{border-color:#8bd36a;background:linear-gradient(180deg,#3f9a3a,#1f5f2a)}
+.modal{border-top:4px solid var(--gold);background:linear-gradient(180deg,#7a4f26,#4d3118)}
 </style>
 </head>
 <body>
 
 <div class="loading" id="loading">
-  <div class="em">🌾</div>
-  <div class="tt">Селянчик</div>
+  <div class="emoji">🌾</div>
+  <div class="title">Селянчик</div>
   <div class="sub" id="loadText">Завантаження...</div>
-  <div class="bar"><div class="bf"></div></div>
+  <div class="bar"><div class="bar-fill"></div></div>
 </div>
 
 <div class="sync" id="sync">⏳</div>
 <div class="toast" id="toast"></div>
-<div class="ver">v2.1</div>
 
 <div class="header">
   <div class="header-left">
-    <div class="avatar">👨‍🌾</div>
-    <div class="pinfo">
+    <div class="avatar" id="avatar">👨‍🌾</div>
+    <div class="player-info">
       <h1 id="name">Селянчик</h1>
-      <div class="lvl" id="level">⭐ Рівень 1</div>
+      <div class="level" id="level">⭐ Рівень 1</div>
     </div>
   </div>
   <div class="header-right">
-    <button class="icon-btn" id="soundBtn" onclick="toggleSound()">🔊</button>
-    <div class="coins"><span>🪙</span><span id="coins">0</span></div>
+    <button class="sound-btn" id="soundBtn" onclick="toggleSound()">🔊</button>
+    <div class="coins"><span class="coin-ico">🪙</span><div><small id="saveLbl">Збережено</small><b id="coins">0</b></div></div>
   </div>
 </div>
 
 <div class="resources">
-  <div class="res">⚡ <span id="energy">50/50</span></div>
-  <div class="res">💧 <span id="water">100</span></div>
-  <div class="res">🌟 <span id="xp">0</span></div>
+  <div class="res big">⚡ <span id="energy">50/50</span><button class="plus" onclick="go('shop',document.querySelectorAll('.nav-item')[1])">+</button></div>
+  <div class="res big">💧 <span id="water">100</span><button class="plus" onclick="go('shop',document.querySelectorAll('.nav-item')[1])">+</button></div>
+  <div class="res big">☀️ <span id="xp">0</span><button class="plus" onclick="go('shop',document.querySelectorAll('.nav-item')[1])">+</button></div>
   <div class="res">🔥 <span id="streak">0</span></div>
+  <div class="res" id="weather">☀️</div>
 </div>
 
 <div class="content">
-  <!-- FARM -->
   <div class="section active" id="sec-farm">
+    <div class="banner" id="eventBanner" style="display:none"></div>
     <div class="daily" id="daily" style="display:none" onclick="claimDaily()">
       <h4>🎁 Щоденна нагорода</h4>
       <p id="dailyText">Натисни, щоб забрати</p>
     </div>
-    <div class="stitle">
-      <span>🌱 Моя ферма</span>
+    <div class="section-title farm-title">
+      <span class="plank">🌱 Моя ферма</span>
       <span style="font-size:12px;color:var(--dim)" id="plots">9/12</span>
+      <svg class="barn" viewBox="0 0 120 90"><rect x="22" y="38" width="76" height="46" fill="#c0392b"/><polygon points="14,40 60,8 106,40" fill="#8e2a1f"/><rect x="46" y="52" width="28" height="32" fill="#efe6d4" stroke="#7a1f16" stroke-width="3"/><path d="M46 52L74 84M74 52L46 84" stroke="#7a1f16" stroke-width="3"/><rect x="0" y="80" width="120" height="6" fill="#a8702f"/></svg>
     </div>
     <div class="farm-grid" id="farm"></div>
+    <button class="btn btn-orange" id="scytheBtn" style="display:none;width:100%;margin-bottom:12px" onclick="harvestAll()">🪓 Зібрати все</button>
     <div class="seed-panel">
       <h3>🌰 Обери насіння</h3>
       <div class="seed-list" id="seeds"></div>
     </div>
   </div>
 
-  <!-- SHOP -->
   <div class="section" id="sec-shop">
-    <div class="stitle">🏪 Магазин</div>
+    <div class="section-title">🏪 Магазин</div>
     <div class="tabs" id="shopTabs"></div>
     <div id="shopItems"></div>
-    <div class="stitle" style="margin-top:14px">
+    <div class="section-title" style="margin-top:14px">
       <span>🎒 Інвентар</span>
-      <button class="btn btn-o" style="padding:4px 10px;font-size:12px" onclick="sellAll()">Продати все</button>
+      <button class="btn btn-orange" style="padding:4px 10px;font-size:12px" onclick="sellAll()">Продати все</button>
     </div>
     <div class="inv-grid" id="inv"></div>
   </div>
 
-  <!-- ANIMALS -->
   <div class="section" id="sec-animals">
-    <div class="stitle">🐄 Тварини</div>
+    <div class="section-title"><span>🐄 Тварини</span><button class="btn btn-green" style="padding:5px 10px;font-size:12px" onclick="eggGame()">🥚 Міні-гра</button></div>
     <div class="animals-grid" id="animals"></div>
-    <div class="stitle" style="margin-top:14px">🚜 Транспорт</div>
+    <div class="section-title" style="margin-top:14px">🚜 Транспорт</div>
     <div id="transport"></div>
+    <div class="section-title" style="margin-top:14px">🏗️ Будівлі</div>
+    <div id="buildings"></div>
   </div>
 
-  <!-- QUESTS -->
   <div class="section" id="sec-quests">
-    <div class="stitle">📜 Завдання</div>
+    <div class="section-title">📜 Завдання</div>
     <div class="tabs">
       <div class="tab active" onclick="setQTab(this,'daily')">📅 Щоденні</div>
       <div class="tab" onclick="setQTab(this,'ach')">🏆 Досягнення</div>
+      <div class="tab" onclick="setQTab(this,'ch')">🔥 Челенджі</div>
+      <div class="tab" onclick="setQTab(this,'col')">📖 Колекція</div>
     </div>
     <div id="quests"></div>
   </div>
 
-  <!-- RATING -->
   <div class="section" id="sec-rating">
-    <div class="stitle">🏆 Рейтинг</div>
+    <div class="section-title">🏆 Рейтинг</div>
+    <button class="btn btn-green" style="width:100%;margin-bottom:10px" onclick="invite()">👥 Запросити друга (+150🪙 за кожного)</button>
     <div class="tabs">
       <div class="tab active" onclick="setRTab(this,'players')">👥 Гравці</div>
       <div class="tab" onclick="setRTab(this,'clans')">🏰 Клани</div>
@@ -426,52 +434,65 @@ body::before {
 </div>
 
 <script>
-/* ===================== SOUND ===================== */
+// ===================== SOUND =====================
 class SFX {
-  constructor(){ this.ctx=null; this.on=true; this.music=true; this.g=null; this.started=false; }
-  init(){
-    if(this.ctx) return;
-    try{
-      this.ctx=new (window.AudioContext||window.webkitAudioContext)();
-      this.g=this.ctx.createGain(); this.g.gain.value=0.32; this.g.connect(this.ctx.destination);
-    }catch(e){}
+  constructor() {
+    this.ctx = null;
+    this.on = true;
+    this.music = true;
+    this.g = null;
+    this.started = false;
   }
-  resume(){ if(this.ctx?.state==='suspended') this.ctx.resume(); }
-  tone(f,type,dur,vol=0.28,delay=0){
-    if(!this.on||!this.ctx) return; this.resume();
-    const o=this.ctx.createOscillator(), g=this.ctx.createGain();
-    o.type=type; o.frequency.value=f;
-    g.gain.setValueAtTime(0,this.ctx.currentTime+delay);
-    g.gain.linearRampToValueAtTime(vol,this.ctx.currentTime+delay+0.015);
-    g.gain.exponentialRampToValueAtTime(0.001,this.ctx.currentTime+delay+dur);
+  init() {
+    if (this.ctx) return;
+    try {
+      this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+      this.g = this.ctx.createGain();
+      this.g.gain.value = 0.32;
+      this.g.connect(this.ctx.destination);
+    } catch(e){}
+  }
+  resume() { if (this.ctx && this.ctx.state === 'suspended') this.ctx.resume(); }
+  tone(f, type, dur, vol=0.28, delay=0) {
+    if (!this.on || !this.ctx) return;
+    this.resume();
+    const o = this.ctx.createOscillator();
+    const g = this.ctx.createGain();
+    o.type = type; o.frequency.value = f;
+    g.gain.setValueAtTime(0, this.ctx.currentTime + delay);
+    g.gain.linearRampToValueAtTime(vol, this.ctx.currentTime + delay + 0.015);
+    g.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + delay + dur);
     o.connect(g); g.connect(this.g);
-    o.start(this.ctx.currentTime+delay); o.stop(this.ctx.currentTime+delay+dur+0.04);
+    o.start(this.ctx.currentTime + delay);
+    o.stop(this.ctx.currentTime + delay + dur + 0.04);
   }
-  plant(){ this.tone(220,'triangle',0.14,0.22); this.tone(330,'sine',0.18,0.18,0.07); }
-  harvest(){ this.tone(523,'sine',0.1,0.28); this.tone(659,'sine',0.13,0.22,0.07); this.tone(784,'sine',0.18,0.18,0.14); }
-  coin(){ this.tone(880,'sine',0.07,0.22); this.tone(1175,'sine',0.11,0.18,0.05); }
-  buy(){ this.tone(392,'triangle',0.09,0.22); this.tone(523,'triangle',0.13,0.18,0.07); }
-  level(){ [523,659,784,1047].forEach((f,i)=>this.tone(f,'sine',0.22,0.28,i*0.11)); }
-  click(){ this.tone(600,'sine',0.04,0.12); }
-  animal(){ this.tone(300,'sawtooth',0.09,0.14); this.tone(450,'triangle',0.13,0.11,0.07); }
-  err(){ this.tone(150,'sawtooth',0.18,0.18); }
-  daily(){ [440,554,659,880].forEach((f,i)=>this.tone(f,'sine',0.18,0.22,i*0.09)); }
-  startMusic(){
-    if(!this.music||!this.on||!this.ctx||this.started) return;
-    this.started=true; this.resume(); this.loopMusic();
+  plant() { this.tone(220,'triangle',0.14,0.22); this.tone(330,'sine',0.18,0.18,0.07); }
+  harvest() { this.tone(523,'sine',0.1,0.28); this.tone(659,'sine',0.13,0.22,0.07); this.tone(784,'sine',0.18,0.18,0.14); }
+  coin() { this.tone(880,'sine',0.07,0.22); this.tone(1175,'sine',0.11,0.18,0.05); }
+  buy() { this.tone(392,'triangle',0.09,0.22); this.tone(523,'triangle',0.13,0.18,0.07); }
+  level() { [523,659,784,1047].forEach((f,i)=>this.tone(f,'sine',0.22,0.28,i*0.11)); }
+  click() { this.tone(600,'sine',0.04,0.12); }
+  animal() { this.tone(300,'sawtooth',0.09,0.14); this.tone(450,'triangle',0.13,0.11,0.07); }
+  err() { this.tone(150,'sawtooth',0.18,0.18); }
+  daily() { [440,554,659,880].forEach((f,i)=>this.tone(f,'sine',0.18,0.22,i*0.09)); }
+  startMusic() {
+    if (!this.music || !this.on || !this.ctx || this.started) return;
+    this.started = true; this.resume();
+    this.loopMusic();
   }
-  loopMusic(){
-    if(!this.music||!this.on) return;
-    const notes=[[262,0.35],[294,0.35],[330,0.35],[349,0.35],[392,0.5],[349,0.25],[330,0.35],[294,0.35],[262,0.45],[294,0.25],[330,0.4],[262,0.6]];
-    let t=0; notes.forEach(([f,d])=>{ this.tone(f,'triangle',d*0.85,0.05,t); t+=d; });
-    setTimeout(()=>{ if(this.music&&this.on) this.loopMusic(); }, t*1000+900);
+  loopMusic() {
+    if (!this.music || !this.on) return;
+    const notes = [[262,0.35],[294,0.35],[330,0.35],[349,0.35],[392,0.5],[349,0.25],[330,0.35],[294,0.35],[262,0.45],[294,0.25],[330,0.4],[262,0.6]];
+    let t = 0;
+    notes.forEach(([f,d]) => { this.tone(f,'triangle',d*0.85,0.05,t); t += d; });
+    setTimeout(() => { if (this.music && this.on) this.loopMusic(); }, t*1000 + 900);
   }
-  toggle(){ this.on=!this.on; if(!this.on) this.music=false; return this.on; }
+  toggle() { this.on = !this.on; if (!this.on) this.music = false; return this.on; }
 }
-const sfx=new SFX();
+const sfx = new SFX();
 
-/* ===================== DATA ===================== */
-const SEEDS=[
+// ===================== DATA =====================
+const SEEDS = [
   {id:'wheat',e:'🌾',n:'Пшениця',p:10,t:30,r:25,xp:5,u:1},
   {id:'potato',e:'🥔',n:'Картопля',p:12,t:35,r:30,xp:6,u:1},
   {id:'carrot',e:'🥕',n:'Морква',p:15,t:45,r:40,xp:8,u:1},
@@ -482,11 +503,10 @@ const SEEDS=[
   {id:'watermelon',e:'🍉',n:'Кавун',p:80,t:180,r:200,xp:40,u:6},
   {id:'grape',e:'🍇',n:'Виноград',p:100,t:240,r:280,xp:55,u:8},
   {id:'pumpkin',e:'🎃',n:'Гарбуз',p:150,t:300,r:400,xp:80,u:10},
-  {id:'pepper',e:'🌶️',n:'Перець',p:45,t:100,r:100,xp:20,u:4},
-  {id:'cabbage',e:'🥬',n:'Капуста',p:28,t:75,r:65,xp:12,u:2},
+  {id:'gold_pumpkin',e:'🏆',n:'Золотий гарбуз',p:200,t:200,r:900,xp:150,u:1,ev:true},
 ];
 
-const ANIMALS=[
+const ANIMALS = [
   {id:'chicken',e:'🐔',n:'Курка',p:100,pr:'🥚 Яйця',i:60,r:30,u:1},
   {id:'duck',e:'🦆',n:'Качка',p:200,pr:'🪶 Пух',i:90,r:45,u:2},
   {id:'cow',e:'🐄',n:'Корова',p:500,pr:'🥛 Молоко',i:120,r:80,u:3},
@@ -495,109 +515,153 @@ const ANIMALS=[
   {id:'pig',e:'🐷',n:'Свиня',p:300,pr:'🥓 Бекон',i:180,r:120,u:5},
   {id:'bee',e:'🐝',n:'Бджоли',p:600,pr:'🍯 Мед',i:200,r:150,u:6},
   {id:'horse',e:'🐴',n:'Кінь',p:1000,pr:'🏇 Перегони',i:300,r:250,u:8},
-  {id:'rabbit',e:'🐰',n:'Кролик',p:250,pr:'🧤 Хутро',i:110,r:55,u:2},
-  {id:'turkey',e:'🦃',n:'Індичка',p:450,pr:'🍗 М\'ясо',i:160,r:110,u:5},
 ];
 
-const TRANSPORT=[
-  {id:'bicycle',e:'🚲',n:'Велосипед',p:200,s:20,d:'Базовий транспорт'},
-  {id:'scooter',e:'🛵',n:'Скутер',p:500,s:35,d:'Швидше пересування'},
+const TRANSPORT = [
+  {id:'bicycle',e:'🚲',n:'Велосипед',p:200,s:20,d:'Базовий'},
   {id:'tractor',e:'🚜',n:'Трактор',p:1000,s:50,d:'+20% до збору'},
-  {id:'truck',e:'🚚',n:'Вантажівка',p:3000,s:70,d:'Більше місця в інвентарі'},
-  {id:'helicopter',e:'🚁',n:'Гелікоптер',p:10000,s:100,d:'Миттєва доставка'},
+  {id:'truck',e:'🚚',n:'Вантажівка',p:3000,s:70,d:'Більше місця'},
+  {id:'helicopter',e:'🚁',n:'Гелікоптер',p:10000,s:100,d:'Миттєво'},
 ];
 
-const SHOP_CATS=[
+const SHOP_CATS = [
   {id:'seeds',n:'🌱 Насіння'},
   {id:'tools',n:'🔧 Знаряддя'},
   {id:'boosts',n:'⚡ Бусти'},
   {id:'decor',n:'🏡 Декор'},
+  {id:'market',n:'🤝 Ринок'},
 ];
 
-const SHOP={
-  seeds:SEEDS.map(s=>({...s,desc:`${s.t} сек • Lv.${s.u}`})),
-  tools:[
-    {id:'watering_can',e:'🪣',n:'Лійка',p:150,desc:'Автополив 1 грядки'},
-    {id:'fertilizer',e:'💩',n:'Добриво',p:80,desc:'Час росту -25%'},
-    {id:'scythe',e:'🪓',n:'Коса',p:200,desc:'Збір всього за раз'},
-    {id:'scarecrow',e:'🎃',n:'Опудало',p:120,desc:'Захист від ворон'},
-    {id:'shovel',e:'⛏️',n:'Лопата',p:180,desc:'Швидше саджання'},
+const SHOP = {
+  seeds: SEEDS.filter(s=>!s.ev).map(s=>({...s,desc:`${s.t} сек • Lv. ${s.u}`})),
+  tools: [
+    {id:'watering_can',e:'🪣',n:'Лійка',p:150,desc:'Полив -25% часу'},
+    {id:'fertilizer',e:'💩',n:'Добриво',p:80,desc:'-25% часу'},
+    {id:'scythe',e:'🪓',n:'Коса',p:200,desc:'Збір всього'},
+    {id:'scarecrow',e:'🎃',n:'Опудало',p:120,desc:'+5% XP (пасивно)'},
   ],
-  boosts:[
+  boosts: [
     {id:'energy_drink',e:'🧃',n:'Енергетик',p:50,desc:'+25 енергії'},
-    {id:'lucky_clover',e:'🍀',n:'Конюшина',p:200,desc:'×2 врожай 5 хв'},
-    {id:'speed_seed',e:'⏰',n:'Часовий кристал',p:300,desc:'Миттєвий ріст'},
-    {id:'xp_boost',e:'📚',n:'Книга досвіду',p:150,desc:'+50 XP одразу'},
+    {id:'lucky_clover',e:'🍀',n:'Конюшина',p:200,desc:'×2 врожай'},
+    {id:'speed_seed',e:'⏰',n:'Кристал',p:300,desc:'Миттєвий ріст'},
   ],
-  decor:[
-    {id:'fence',e:'🏗️',n:'Паркан',p:100,desc:'Захист ферми'},
+  decor: [
+    {id:'fence',e:'🏗️',n:'Паркан',p:100,desc:'+5% монет (пасивно)'},
     {id:'well',e:'⛲',n:'Криниця',p:500,desc:'+50 води'},
-    {id:'windmill',e:'🏭',n:'Млин',p:1500,desc:'Мелить зерно'},
-    {id:'barn',e:'🏚️',n:'Сарай',p:2000,desc:'Місце для тварин'},
+    {id:'windmill',e:'🏭',n:'Млин',p:1500,desc:'+5% монет (пасивно)'},
   ],
 };
 
-const QUESTS=[
+const QUESTS = [
   {id:'plant_5',n:'Посади 5 культур',t:5,r:80,ty:'plant'},
   {id:'harvest_8',n:'Збери 8 врожаїв',t:8,r:120,ty:'harvest'},
-  {id:'collect_3',n:'Забери 3 продукти тварин',t:3,r:100,ty:'animal'},
+  {id:'collect_3',n:'Забери 3 продукти',t:3,r:100,ty:'animal'},
   {id:'earn_200',n:'Зароби 200 монет',t:200,r:60,ty:'coins'},
-  {id:'buy_1',n:'Купи 1 тварину',t:1,r:90,ty:'buy_animal'},
 ];
 
-const ACH=[
-  {id:'first_plant',n:'Перша посадка',d:'Посади першу культуру',e:'🌱'},
-  {id:'level_5',n:'Досвідчений фермер',d:'Досягни 5 рівня',e:'⭐'},
-  {id:'level_10',n:'Майстер ферми',d:'Досягни 10 рівня',e:'🏅'},
-  {id:'rich_1k',n:'Багатій',d:'Накопич 1000 монет',e:'💰'},
-  {id:'rich_10k',n:'Мільйонер села',d:'Накопич 10 000 монет',e:'💎'},
-  {id:'animal_lover',n:'Тваринник',d:'Купи 3 тварини',e:'🐄'},
-  {id:'harvest_50',n:'Урожайний',d:'Збери 50 врожаїв',e:'🌾'},
-  {id:'harvest_200',n:'Король врожаю',d:'Збери 200 врожаїв',e:'👑'},
-  {id:'streak_7',n:'Тиждень відданості',d:'7 днів стріку',e:'🔥'},
-  {id:'streak_30',n:'Місяць на фермі',d:'30 днів стріку',e:'📅'},
+const ACH = [
+  {id:'first_plant',n:'Перша посадка',d:'Посади культуру',e:'🌱'},
+  {id:'level_5',n:'Досвідчений',d:'5 рівень',e:'⭐'},
+  {id:'rich_1k',n:'Багатій',d:'1000 монет',e:'💰'},
+  {id:'animal_lover',n:'Тваринник',d:'3 тварини',e:'🐄'},
+  {id:'harvest_50',n:'Урожайний',d:'50 врожаїв',e:'🌾'},
+  {id:'streak_7',n:'Тиждень',d:'7 днів стріку',e:'🔥'},
 ];
 
-/* ===================== STATE ===================== */
-let state={
+const BOT_LINK='https://t.me/lifepeasantbot'; // якщо Mini App не головний у BotFather — додай /коротка_назва
+const BUILDINGS=[
+ {id:'barn',e:'🏚️',n:'Сарай',d:'+10 макс. енергії за рівень',base:300},
+ {id:'greenhouse',e:'🏡',n:'Теплиця',d:'-8% часу росту за рівень',base:500},
+ {id:'mill',e:'🏭',n:'Млин',d:'+10% монет зі збору за рівень',base:800},
+];
+const EVENTS=[
+ {n:'🍂 Осінній ярмарок',from:'2026-10-11',to:'2026-10-17',xp:2,coin:1.25},
+ {n:'❄️ Зимові свята',from:'2026-12-20',to:'2026-12-27',xp:2,coin:1.25},
+ {n:'🌷 Весняна посадка',from:'2027-03-20',to:'2027-03-26',xp:2,coin:1.25},
+];
+const WEATHER=[{e:'☀️',n:'Сонячно',m:1},{e:'🌧️',n:'Дощ',m:0.8},{e:'⛅',n:'Хмарно',m:1},{e:'🔥',n:'Посуха',m:1.2}];
+const CH=[
+ {id:'d_tomato',n:'Збери 10 помідорів',t:10,r:300,ty:'harvest',crop:'tomato',per:'d'},
+ {id:'d_animals',n:'Забери 5 продуктів',t:5,r:200,ty:'animal',per:'d'},
+ {id:'w_harvest',n:'Збери 60 врожаїв',t:60,r:1500,ty:'harvest',per:'w'},
+ {id:'w_buy',n:'Купи 2 нових тварини',t:2,r:1000,ty:'buyAnimal',per:'w'},
+];
+function dayKey(){return new Date().toISOString().slice(0,10);}
+function weekKey(){const d=new Date(),j=new Date(d.getFullYear(),0,1);return d.getFullYear()+'-'+Math.floor((d-j)/604800000);}
+function curEvent(){const t=dayKey();return EVENTS.find(e=>t>=e.from&&t<=e.to)||null;}
+function curWeather(){const h=Math.floor(Date.now()/3600000);return WEATHER[[0,1,2,0,3,0,1,2][h%8]];}
+function growMul(i){const pl=((state.plotLv&&state.plotLv[i])||1)-1,gh=(state.build.greenhouse||0)*0.08;return Math.max(0.3,(1-pl*0.1-gh)*curWeather().m);}
+function yieldMul(i){const pl=((state.plotLv&&state.plotLv[i])||1)-1,ev=curEvent();return (1+pl*0.15)*(1+(state.build.mill||0)*0.1)*(ev?ev.coin:1)*(1+(state.inv.fence>0?0.05:0)+(state.inv.windmill>0?0.05:0));}
+function initCH(){const d=dayKey(),w=weekKey();
+ [['d',d],['w',w]].forEach(([k,v])=>{ if(state.ch[k]!==v){CH.filter(c=>c.per===k).forEach(c=>{delete state.chP[c.id];delete state.ch[c.id+'_c'];});state.ch[k]=v;} });}
+function chProg(ty,amt=1,crop){CH.forEach(c=>{if(c.ty===ty&&(!c.crop||c.crop===crop))state.chP[c.id]=(state.chP[c.id]||0)+amt;});}
+function claimCH(id){const c=CH.find(x=>x.id===id);if(!c||(state.chP[id]||0)<c.t||state.ch[id+'_c'])return;state.ch[id+'_c']=true;state.coins+=c.r;state.stats.earned+=c.r;toast(`🔥 +${c.r}🪙`);sfx.coin();save();render();}
+function collect(id){if(state.col[id])return;state.col[id]=true;const all=[...SEEDS,...ANIMALS,...TRANSPORT].filter(x=>!x.ev);if(!state.colBonus&&all.every(x=>state.col[x.id])){state.colBonus=true;state.coins+=5000;toast('📖 Колекція повна! +5000🪙');sfx.level();}}
+function renderBanner(){const e=curEvent(),b=document.getElementById('eventBanner');
+ if(e){b.style.display='block';b.textContent=`${e.n} • ×${e.xp} XP, +${Math.round((e.coin-1)*100)}% монет до ${e.to}`;}else b.style.display='none';
+ const w=curWeather();document.getElementById('weather').textContent=w.e+' '+w.n;}
+function renderBuildings(){const l=document.getElementById('buildings');l.innerHTML='';
+ BUILDINGS.forEach(b=>{const lv=state.build[b.id]||0,cost=b.base*(lv+1),d=document.createElement('div');d.className='card';
+  d.innerHTML=`<div class="card-icon">${b.e}</div><div class="card-info"><h4>${b.n} • Рів. ${lv}/5</h4><p>${b.d}</p></div>${lv<5?`<button class="btn-price">🪙${cost}</button>`:'✅'}`;
+  if(lv<5)d.querySelector('button').onclick=()=>{if(state.coins<cost){sfx.err();return toast('❌ Не вистачає');}state.coins-=cost;state.build[b.id]=lv+1;if(b.id==='barn'){state.maxEnergy+=10;state.energy+=10;}toast(`🏗️ ${b.n} Рів. ${lv+1}`);sfx.buy();save();render();};
+  l.appendChild(d);});}
+function plotModal(i){const lv=state.plotLv[i]||1,cost=150*lv*lv;
+ document.getElementById('modal').innerHTML=`<h3>🟫 Грядка ${i+1} • Рів. ${lv}/5</h3><p style="text-align:center;color:var(--dim);margin-bottom:14px">Кожен рівень: -10% часу, +15% врожаю</p><div style="text-align:center">${lv<5?`<button class="btn btn-green" id="upBtn">⬆️ Покращити 🪙${cost}</button>`:'✅ Максимум'}</div>`;
+ const b=document.getElementById('upBtn');
+ if(b)b.onclick=()=>{if(state.coins<cost){sfx.err();return toast('❌ Не вистачає');}state.coins-=cost;state.plotLv[i]=lv+1;sfx.buy();document.getElementById('modalBg').classList.remove('open');save();render();};
+ document.getElementById('modalBg').classList.add('open');}
+function invite(){const link=`${BOT_LINK}?startapp=ref_${uid}`,txt='🌾 Заходь до мене на ферму Селянчик! Отримаєш бонус 🪙',url='https://t.me/share/url?url='+encodeURIComponent(link)+'&text='+encodeURIComponent(txt);
+ try{Telegram.WebApp.openTelegramLink(url);}catch(e){window.open(url,'_blank');}}
+async function refs(){ if(!fbReady||!db)return;
+ try{
+  if(startParam.indexOf('ref_')===0&&!state.refBy){const r=startParam.slice(4);
+   if(r&&r!==uid){state.refBy=r;state.coins+=150;state.energy=state.maxEnergy;toast('🎁 Бонус за запрошення +150🪙');await fb.set(fb.ref(db,'refs/'+r+'/'+uid),Date.now());save();render();}}
+  const snap=await fb.get(fb.ref(db,'refs/'+uid));
+  if(snap.exists()){const n=Object.keys(snap.val()).length;
+   if(n>state.refClaimed){const add=(n-state.refClaimed)*150;state.refClaimed=n;state.coins+=add;state.stats.earned+=add;toast(`👥 Друзі +${add}🪙`);save();render();}}
+ }catch(e){}}
+
+// ===================== STATE =====================
+let state = {
   coins:500, xp:0, level:1, energy:50, maxEnergy:50, water:100,
-  farm:Array(12).fill(null), unlocked:9,
+  farm: Array(12).fill(null), unlocked:9,
   inv:{}, animals:{}, transport:{},
   seed:'wheat', lastLogin:null, streak:0, claimedDaily:false,
-  lastOnline:Date.now(),
+  lastOnline: Date.now(),
   qProg:{}, quests:{}, ach:{},
-  stats:{planted:0,harvested:0,animals:0,earned:0,boughtAnimals:0},
-  settings:{sound:true,music:true},
-  clan:null, version:2.1
+  stats:{planted:0,harvested:0,animals:0,earned:0},
+  settings:{sound:true,music:true}
 };
 
 let db=null, auth=null, uid=null, fbReady=false, fb={};
-let saveFails=0;
+let saveFails=0, curShop='seeds', armed=null;
+let tgPhoto=null, startParam='';
 
-/* ===================== FIREBASE (fast fail) ===================== */
-async function loadFB(){
-  try{
-    const mods=await Promise.race([
+// ===================== FIREBASE (швидкий фейл) =====================
+async function loadFB() {
+  try {
+    const mods = await Promise.race([
       Promise.all([
         import("https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js"),
         import("https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js"),
         import("https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js"),
       ]),
-      new Promise((_,rej)=>setTimeout(()=>rej(new Error('to')),3200))
+      new Promise((_,rej)=>setTimeout(()=>rej(new Error('to')),3500))
     ]);
-    fb.initializeApp=mods[0].initializeApp;
-    fb.getDatabase=mods[1].getDatabase;
-    fb.ref=mods[1].ref; fb.set=mods[1].set; fb.get=mods[1].get;
-    fb.query=mods[1].query; fb.orderByChild=mods[1].orderByChild;
-    fb.limitToLast=mods[1].limitToLast;
-    fb.getAuth=mods[2].getAuth;
-    fb.signInAnonymously=mods[2].signInAnonymously;
-    fb.onAuthStateChanged=mods[2].onAuthStateChanged;
+    fb.initializeApp = mods[0].initializeApp;
+    fb.getDatabase = mods[1].getDatabase;
+    fb.ref = mods[1].ref; fb.set = mods[1].set; fb.get = mods[1].get;
+    fb.query = mods[1].query; fb.orderByChild = mods[1].orderByChild;
+    fb.limitToLast = mods[1].limitToLast;
+    fb.push = mods[1].push; fb.runTransaction = mods[1].runTransaction;
+    fb.getAuth = mods[2].getAuth;
+    fb.signInAnonymously = mods[2].signInAnonymously;
+    fb.onAuthStateChanged = mods[2].onAuthStateChanged;
     return true;
-  }catch(e){ return false; }
+  } catch(e) { return false; }
 }
 
-const FB_CFG={
+const FB_CFG = {
   apiKey:"AIzaSyCTRvSagGpRnkBs6nBLcE5HAoLR8gkljYI",
   authDomain:"selyanchyk.firebaseapp.com",
   databaseURL:"https://selyanchyk-default-rtdb.firebaseio.com",
@@ -607,475 +671,702 @@ const FB_CFG={
   appId:"1:739361564137:web:571be77b86b36376745778"
 };
 
-async function initFB(){
-  const ok=await loadFB();
-  if(!ok) return;
-  try{
-    const app=fb.initializeApp(FB_CFG);
-    db=fb.getDatabase(app); auth=fb.getAuth(app);
-    await new Promise(res=>{
+async function initFB() {
+  const ok = await loadFB();
+  if (!ok) return;
+  try {
+    const app = fb.initializeApp(FB_CFG);
+    db = fb.getDatabase(app);
+    auth = fb.getAuth(app);
+    await new Promise(res => {
       let done=false;
-      const fin=v=>{ if(done)return; done=true; fbReady=v; res(); };
-      const t=setTimeout(()=>fin(false),2500);
-      fb.onAuthStateChanged(auth,u=>{ if(u){clearTimeout(t);fin(true);} });
+      const fin = v => { if(done)return; done=true; fbReady=v; res(); };
+      const t = setTimeout(()=>fin(false), 2800);
+      fb.onAuthStateChanged(auth, u => { if(u){clearTimeout(t);fin(true);} });
       fb.signInAnonymously(auth).catch(()=>{clearTimeout(t);fin(false);});
     });
-  }catch(e){ fbReady=false; }
+  } catch(e) { fbReady=false; }
 }
 
-/* ===================== SAVE ===================== */
-function localKey(){ return 'selyanchyk_v2_'+(uid||'guest'); }
+// ===================== SAVE =====================
+function localKey() { return 'selyanchyk_v2_' + (uid||'guest'); }
 
-function saveLocal(){
-  try{ const d={...state}; delete d.seed; localStorage.setItem(localKey(),JSON.stringify(d)); }catch(e){}
+function saveLocal() {
+  try {
+    const d = {...state}; delete d.seed;
+    localStorage.setItem(localKey(), JSON.stringify(d));
+  } catch(e){}
 }
 
-function loadLocal(){
-  try{
-    const r=localStorage.getItem(localKey())||localStorage.getItem('selyanchyk_'+(uid||'guest'));
-    if(r){ Object.assign(state,JSON.parse(r)); return true; }
-  }catch(e){}
+function loadLocal() {
+  try {
+    const r = localStorage.getItem(localKey()) || localStorage.getItem('selyanchyk_'+(uid||'guest'));
+    if (r) { Object.assign(state, JSON.parse(r)); return true; }
+  } catch(e){}
   return false;
 }
 
-function ensure(){
-  if(!Array.isArray(state.farm)) state.farm=Array(12).fill(null);
-  while(state.farm.length<12) state.farm.push(null);
-  if(typeof state.unlocked!=='number') state.unlocked=9;
-  if(!state.inv) state.inv={};
-  if(!state.animals) state.animals={};
-  if(!state.transport) state.transport={};
-  if(!state.seed) state.seed='wheat';
-  if(typeof state.coins!=='number') state.coins=500;
-  if(typeof state.xp!=='number') state.xp=0;
-  if(typeof state.level!=='number') state.level=1;
-  if(typeof state.maxEnergy!=='number') state.maxEnergy=50;
-  if(typeof state.energy!=='number') state.energy=state.maxEnergy;
-  if(typeof state.water!=='number') state.water=100;
-  if(!state.stats) state.stats={planted:0,harvested:0,animals:0,earned:0,boughtAnimals:0};
-  if(!state.qProg) state.qProg={};
-  if(!state.quests) state.quests={};
-  if(!state.ach) state.ach={};
-  if(!state.settings) state.settings={sound:true,music:true};
-  sfx.on=state.settings.sound!==false;
-  sfx.music=state.settings.music!==false;
+function ensure() {
+  if (!Array.isArray(state.farm)) state.farm = Array(12).fill(null);
+  while (state.farm.length < 12) state.farm.push(null);
+  if (typeof state.unlocked !== 'number') state.unlocked = 9;
+  if (!state.inv) state.inv = {};
+  if (!state.animals) state.animals = {};
+  if (!state.transport) state.transport = {};
+  if (!state.seed) state.seed = 'wheat';
+  if (typeof state.coins !== 'number') state.coins = 500;
+  if (typeof state.xp !== 'number') state.xp = 0;
+  if (typeof state.level !== 'number') state.level = 1;
+  if (typeof state.maxEnergy !== 'number') state.maxEnergy = 50;
+  if (typeof state.energy !== 'number') state.energy = state.maxEnergy;
+  if (typeof state.water !== 'number') state.water = 100;
+  if (!state.stats) state.stats = {planted:0,harvested:0,animals:0,earned:0};
+  if (!state.qProg) state.qProg = {};
+  if (!state.quests) state.quests = {};
+  if (!state.ach) state.ach = {};
+  if (!state.settings) state.settings = {sound:true,music:true};
+  if (!Array.isArray(state.plotLv)) state.plotLv = Array(12).fill(1);
+  while (state.plotLv.length < 12) state.plotLv.push(1);
+  if (!state.build) state.build = {};
+  if (!state.col) state.col = {};
+  if (!state.hist) state.hist = {};
+  if (!state.ch) state.ch = {};
+  if (!state.chP) state.chP = {};
+  if (typeof state.refClaimed !== 'number') state.refClaimed = 0;
+  sfx.on = state.settings.sound !== false;
+  sfx.music = state.settings.music !== false;
 }
 
-async function loadCloud(){
-  if(!fbReady||!db) return false;
-  try{
-    const snap=await Promise.race([
-      fb.get(fb.ref(db,'players/'+uid)),
-      new Promise((_,rej)=>setTimeout(()=>rej(),2200))
+async function loadCloud() {
+  if (!fbReady || !db) return false;
+  try {
+    const snap = await Promise.race([
+      fb.get(fb.ref(db, 'players/'+uid)),
+      new Promise((_,rej)=>setTimeout(()=>rej(),2500))
     ]);
-    if(snap.exists()){ Object.assign(state,snap.val()); return true; }
-  }catch(e){}
+    if (snap.exists()) { Object.assign(state, snap.val()); return true; }
+  } catch(e){}
   return false;
 }
 
-function save(){
-  const d={...state}; delete d.seed; d.lastOnline=Date.now();
+function save() {
+  const _e=state.stats.earned,_k=dayKey();
+  state.hist[_k]=(state.hist[_k]||0)+(_e-(state._le===undefined?_e:state._le)); state._le=_e;
+  const d = {...state}; delete d.seed; d.lastOnline = Date.now();
   saveLocal();
-  if(fbReady&&db){
-    fb.set(fb.ref(db,'players/'+uid),d)
+  if (fbReady && db) {
+    fb.set(fb.ref(db,'players/'+uid), d)
       .then(()=>{saveFails=0; badge(true);})
       .catch(()=>{saveFails++; badge(false);});
   } else badge(false);
 }
 
-function saveRating(){
-  if(!fbReady||!db) return;
-  const name=document.getElementById('name').textContent;
-  fb.set(fb.ref(db,'rating/'+uid),{
-    name, level:state.level, xp:state.xp, coins:state.coins, updated:Date.now()
+function saveRating() {
+  if (!fbReady || !db) return;
+  const name = document.getElementById('name').textContent;
+  fb.set(fb.ref(db,'rating/'+uid), {
+    name, photo:tgPhoto||'', level:state.level, xp:state.xp, coins:state.coins, updated:Date.now()
   }).catch(()=>{});
+  if (state.clan) fb.set(fb.ref(db,'clans/'+state.clan+'/m/'+uid), score()).catch(()=>{});
 }
 
-function badge(ok){
-  const el=document.getElementById('sync');
-  if(!el) return;
-  if(!fbReady){ el.textContent='📴 локально'; el.className='sync bad'; }
-  else if(!ok||saveFails>0){ el.textContent='⚠️'; el.className='sync bad'; }
+function badge(ok) {
+  const el = document.getElementById('sync');
+  if (!el) return;
+  const sl=document.getElementById('saveLbl'); if(sl) sl.textContent=(fbReady&&ok&&saveFails===0)?'Збережено':'Локально';
+  el.style.opacity = '1';
+  if (!fbReady) { el.textContent='📴 локально'; el.className='sync bad'; }
+  else if (!ok || saveFails>0) { el.textContent='⚠️'; el.className='sync bad'; }
   else { el.textContent='☁️'; el.className='sync ok'; }
   setTimeout(()=>el.style.opacity='0.35',1800);
 }
 
-/* ===================== OFFLINE + DAILY ===================== */
-function offline(){
-  if(!state.lastOnline){ state.lastOnline=Date.now(); return; }
-  const sec=Math.floor((Date.now()-state.lastOnline)/1000);
-  if(sec<20) return;
-  let animalGain=0;
+// ===================== OFFLINE + DAILY =====================
+function offline() {
+  if (!state.lastOnline) { state.lastOnline = Date.now(); return; }
+  const sec = Math.floor((Date.now()-state.lastOnline)/1000);
+  if (sec < 20) return;
+  let animalGain = 0;
   Object.keys(state.animals).forEach(id=>{
-    const a=ANIMALS.find(x=>x.id===id); if(!a) return;
-    const own=state.animals[id];
-    const el=(Date.now()-(own.lastCollect||0))/1000;
-    if(el>=a.i){
-      const times=Math.min(Math.floor(el/a.i),8);
-      animalGain+=times*a.r;
-      own.lastCollect=Date.now()-(el%a.i)*1000;
+    const a = ANIMALS.find(x=>x.id===id);
+    if (!a) return;
+    const own = state.animals[id];
+    const el = (Date.now()-(own.lastCollect||0))/1000;
+    if (el >= a.i) {
+      const times = Math.min(Math.floor(el/a.i), 8);
+      animalGain += times * a.r;
+      own.lastCollect = Date.now() - (el % a.i)*1000;
     }
   });
-  const eg=Math.min(state.maxEnergy-state.energy, Math.floor(sec/50));
-  state.energy=Math.min(state.maxEnergy, state.energy+eg);
-  if(animalGain>0){
-    state.coins+=animalGain; state.stats.earned+=animalGain;
+  const eg = Math.min(state.maxEnergy-state.energy, Math.floor(sec/50));
+  state.energy = Math.min(state.maxEnergy, state.energy+eg);
+  if (animalGain > 0) {
+    state.coins += animalGain;
+    state.stats.earned += animalGain;
     toast(`💤 Офлайн +${animalGain}🪙`);
   }
-  state.lastOnline=Date.now();
+  state.lastOnline = Date.now();
 }
 
-function checkDaily(){
-  const today=new Date().toDateString();
-  const last=state.lastLogin?new Date(state.lastLogin).toDateString():null;
-  if(last===today){
-    state.claimedDaily=true;
-    document.getElementById('daily').style.display='none';
+function checkDaily() {
+  const today = new Date().toDateString();
+  const last = state.lastLogin ? new Date(state.lastLogin).toDateString() : null;
+  if (last === today) {
+    state.claimedDaily = true;
+    document.getElementById('daily').style.display = 'none';
     return;
   }
-  if(last){
-    const y=new Date(); y.setDate(y.getDate()-1);
-    state.streak=(last===y.toDateString())?(state.streak||0)+1:1;
-  } else state.streak=1;
-  state.claimedDaily=false;
-  state.lastLogin=Date.now();
-  document.getElementById('daily').style.display='block';
-  document.getElementById('dailyText').textContent=`Стрік ${state.streak} дн. • Натисни`;
-  checkAch('streak_7'); checkAch('streak_30');
+  if (last) {
+    const y = new Date(); y.setDate(y.getDate()-1);
+    state.streak = (last === y.toDateString()) ? (state.streak||0)+1 : 1;
+  } else state.streak = 1;
+  state.claimedDaily = false;
+  state.lastLogin = Date.now();
+  document.getElementById('daily').style.display = 'block';
+  document.getElementById('dailyText').textContent = `Стрік ${state.streak} дн. • Натисни`;
+  checkAch('streak_7');
 }
 
-function claimDaily(){
-  if(state.claimedDaily) return;
-  const s=state.streak||1;
-  const c=50+s*20, x=10+s*5;
-  state.coins+=c; state.xp+=x;
-  state.energy=state.maxEnergy;
-  state.claimedDaily=true;
-  state.stats.earned+=c;
-  document.getElementById('daily').style.display='none';
-  toast(`🎁 +${c}🪙 +${x}XP`);
-  sfx.daily(); levelUp(); save(); render();
+function claimDaily() {
+  if (state.claimedDaily) return;
+  const s = state.streak || 1;
+  const c = 50 + s*20, x = 10 + s*5;
+  state.coins += c; state.xp += x;
+  state.energy = state.maxEnergy;
+  state.claimedDaily = true;
+  state.stats.earned += c;
+  document.getElementById('daily').style.display = 'none';
+  toast(`🎁 +${c}🪙 + ${x}XP`);
+  sfx.daily();
+  levelUp();
+  save(); render();
 }
 
-/* ===================== QUESTS / ACH ===================== */
-function initQ(){
-  const today=new Date().toDateString();
-  if(!state.quests.date||state.quests.date!==today){
-    state.quests={date:today};
-    state.qProg={};
-    QUESTS.forEach(q=>state.qProg[q.id]=0);
+// ===================== QUESTS =====================
+function initQ() {
+  initCH();
+  const today = new Date().toDateString();
+  if (!state.quests.date || state.quests.date !== today) {
+    state.quests = {date:today};
+    state.qProg = {};
+    QUESTS.forEach(q => state.qProg[q.id]=0);
   }
 }
 
-function qProg(ty,amt=1){
-  QUESTS.forEach(q=>{ if(q.ty===ty) state.qProg[q.id]=(state.qProg[q.id]||0)+amt; });
+function qProg(ty, amt=1) {
+  QUESTS.forEach(q => { if (q.ty===ty) state.qProg[q.id]=(state.qProg[q.id]||0)+amt; });
   renderQ();
 }
 
-function claimQ(id){
-  const q=QUESTS.find(x=>x.id===id); if(!q) return;
-  if((state.qProg[id]||0)<q.t||state.quests[id+'_c']) return;
-  state.quests[id+'_c']=true;
-  state.coins+=q.r; state.stats.earned+=q.r;
-  toast(`✅ +${q.r}🪙`); sfx.coin(); save(); renderQ(); renderH();
+function claimQ(id) {
+  const q = QUESTS.find(x=>x.id===id);
+  if (!q) return;
+  if ((state.qProg[id]||0) < q.t || state.quests[id+'_c']) return;
+  state.quests[id+'_c'] = true;
+  state.coins += q.r;
+  state.stats.earned += q.r;
+  toast(`✅ +${q.r}🪙`);
+  sfx.coin();
+  save(); renderQ(); renderH();
 }
 
-function checkAch(id){
-  if(state.ach[id]) return;
-  const a=ACH.find(x=>x.id===id); if(!a) return;
+function checkAch(id) {
+  if (state.ach[id]) return;
+  const a = ACH.find(x=>x.id===id);
+  if (!a) return;
   let ok=false;
-  if(id==='first_plant'&&state.stats.planted>=1) ok=true;
-  if(id==='level_5'&&state.level>=5) ok=true;
-  if(id==='level_10'&&state.level>=10) ok=true;
-  if(id==='rich_1k'&&state.coins>=1000) ok=true;
-  if(id==='rich_10k'&&state.coins>=10000) ok=true;
-  if(id==='animal_lover'&&Object.keys(state.animals).length>=3) ok=true;
-  if(id==='harvest_50'&&state.stats.harvested>=50) ok=true;
-  if(id==='harvest_200'&&state.stats.harvested>=200) ok=true;
-  if(id==='streak_7'&&state.streak>=7) ok=true;
-  if(id==='streak_30'&&state.streak>=30) ok=true;
-  if(ok){
-    state.ach[id]=true; state.coins+=100;
-    toast(`🏆 ${a.n} +100🪙`); sfx.level(); save();
+  if (id==='first_plant' && state.stats.planted>=1) ok=true;
+  if (id==='level_5' && state.level>=5) ok=true;
+  if (id==='rich_1k' && state.coins>=1000) ok=true;
+  if (id==='animal_lover' && Object.keys(state.animals).length>=3) ok=true;
+  if (id==='harvest_50' && state.stats.harvested>=50) ok=true;
+  if (id==='streak_7' && state.streak>=7) ok=true;
+  if (ok) {
+    state.ach[id]=true;
+    state.coins+=100;
+    toast(`🏆 ${a.n} +100🪙`);
+    sfx.level();
+    save();
   }
 }
 
-/* ===================== RENDER ===================== */
-function render(){
+// ===================== RENDER =====================
+function render() {
   renderH(); renderRes(); renderFarm(); renderSeeds();
-  renderShop(); renderAnimals(); renderTransport(); renderInv(); renderQ();
-  document.getElementById('plots').textContent=state.unlocked+'/12';
-}
-function renderH(){
-  document.getElementById('coins').textContent=fmt(state.coins);
-  document.getElementById('level').textContent=`⭐ Рівень ${state.level}`;
-}
-function renderRes(){
-  document.getElementById('energy').textContent=`${state.energy}/${state.maxEnergy}`;
-  document.getElementById('water').textContent=state.water;
-  document.getElementById('xp').textContent=fmt(state.xp);
-  document.getElementById('streak').textContent=state.streak||0;
+  renderShop(); renderAnimals(); renderTransport(); renderInv(); renderQ(); renderBuildings(); renderBanner();
+  document.getElementById('scytheBtn').style.display = state.inv.scythe>0 ? 'block' : 'none';
+  document.getElementById('plots').textContent = state.unlocked+'/12';
 }
 
-function renderFarm(){
-  const g=document.getElementById('farm'); g.innerHTML='';
-  for(let i=0;i<12;i++){
-    const d=document.createElement('div');
-    if(i>=state.unlocked){
-      d.className='plot locked';
-      d.onclick=()=>{
-        const cost=200+i*100;
-        if(state.coins<cost) return toast('❌ Не вистачає монет');
-        if(state.level<Math.floor(i/3)+1) return toast(`🔒 Рівень ${Math.floor(i/3)+1}`);
-        state.coins-=cost; state.unlocked=i+1;
-        toast('🔓 Грядку відкрито!'); sfx.buy(); save(); render();
+function renderH() {
+  document.getElementById('coins').textContent = fmt(state.coins);
+  document.getElementById('level').textContent = `⭐ Рівень ${state.level}`;
+}
+function renderRes() {
+  document.getElementById('energy').textContent = `${state.energy}/${state.maxEnergy}`;
+  document.getElementById('water').textContent = state.water;
+  document.getElementById('xp').textContent = fmt(state.xp);
+  document.getElementById('streak').textContent = state.streak||0;
+}
+
+function renderFarm() {
+  const g = document.getElementById('farm');
+  g.innerHTML = '';
+  for (let i=0;i<12;i++) {
+    const d = document.createElement('div');
+    if (i >= state.unlocked) {
+      d.className = 'plot locked';
+      d.onclick = () => {
+        const cost = 200 + i*100;
+        if (state.coins < cost) return toast('❌ Не вистачає монет');
+        if (state.level < Math.floor(i/3)+1) return toast(`🔒 Рівень ${Math.floor(i/3)+1}`);
+        state.coins -= cost;
+        state.unlocked = i+1;
+        toast('🔓 Грядку відкрито!');
+        sfx.buy(); save(); render();
       };
     } else {
-      const cell=state.farm[i];
-      if(!cell){ d.className='plot empty'; d.onclick=()=>plant(i); }
-      else {
-        const s=SEEDS.find(x=>x.id===cell.seedId);
-        if(!s){ d.className='plot empty'; d.onclick=()=>plant(i); }
+      const cell = state.farm[i];
+      if (!cell) {
+        d.className = 'plot empty';
+        d.onclick = () => plant(i);
+      } else {
+        const s = SEEDS.find(x=>x.id===cell.seedId);
+        if (!s) { d.className='plot empty'; d.onclick=()=>plant(i); }
         else {
-          const el=(Date.now()-cell.at)/1000;
-          const ready=el>=cell.t;
-          d.className='plot '+(ready?'ready':'growing');
-          d.innerHTML=`<span class="em">${s.e}</span><span class="tm">${ready?'✅ Збери!':'⏳ '+fmtT(cell.t-el)}</span>`;
-          d.onclick=()=>ready?harvest(i):toast('⏳ Ще росте...');
+          const el = (Date.now()-cell.at)/1000;
+          const ready = el >= cell.t;
+          d.className = 'plot ' + (ready?'ready':'growing');
+          d.innerHTML = `<span class="emoji">${s.e}</span><span class="timer">${ready?'✅ Збери!':'⏳ '+fmtT(cell.t-el)}</span>`;
+          d.onclick = () => ready ? harvest(i) : (armed ? applyItem(i) : waterPlot(i));
         }
       }
+    }
+    if (i < state.unlocked) {
+      const b = document.createElement('span');
+      b.className = 'lv'; b.textContent = '⬆' + (state.plotLv[i]||1);
+      b.onclick = e => { e.stopPropagation(); plotModal(i); };
+      d.appendChild(b);
     }
     g.appendChild(d);
   }
 }
 
-function renderSeeds(){
-  const l=document.getElementById('seeds'); l.innerHTML='';
-  SEEDS.forEach(s=>{
-    const locked=state.level<s.u;
-    const d=document.createElement('div');
-    d.className='seed'+(state.seed===s.id?' selected':'')+(locked?' locked':'');
-    d.innerHTML=`<span class="e">${s.e}</span><span class="n">${s.n}</span><span class="p">${locked?'🔒'+s.u:'🪙'+s.p}</span>`;
-    d.onclick=()=>{ if(locked) return toast(`🔒 Рівень ${s.u}`); state.seed=s.id; renderSeeds(); sfx.click(); };
+function renderSeeds() {
+  const l = document.getElementById('seeds');
+  l.innerHTML = '';
+  SEEDS.forEach(s => {
+    if (s.ev && !curEvent()) return;
+    const locked = state.level < s.u;
+    const d = document.createElement('div');
+    d.className = 'seed'+(state.seed===s.id?' selected':'')+(locked?' locked':'');
+    d.innerHTML = `<span class="e">${s.e}</span><span class="n">${s.n}</span><span class="p">${locked?'🔒'+s.u:'🪙'+s.p}</span>`;
+    d.onclick = () => {
+      if (locked) return toast(`🔒 Рівень ${s.u}`);
+      state.seed = s.id; renderSeeds(); sfx.click();
+    };
     l.appendChild(d);
   });
 }
 
-function plant(i){
-  const s=SEEDS.find(x=>x.id===state.seed); if(!s) return;
-  if(state.level<s.u) return toast(`🔒 Рівень ${s.u}`);
-  if(state.coins<s.p){ sfx.err(); return toast('❌ Не вистачає монет'); }
-  if(state.energy<5){ sfx.err(); return toast('❌ Немає енергії'); }
-  state.coins-=s.p; state.energy-=5;
-  state.farm[i]={seedId:s.id,at:Date.now(),t:s.t};
-  state.stats.planted++; qProg('plant'); checkAch('first_plant');
-  toast(`🌱 ${s.n}`); sfx.plant(); save(); render();
+function plant(i) {
+  const s = SEEDS.find(x=>x.id===state.seed);
+  if (!s) return;
+  if (state.level < s.u) return toast(`🔒 Рівень ${s.u}`);
+  if (state.coins < s.p) { sfx.err(); return toast('❌ Не вистачає монет'); }
+  if (state.energy < 5) { sfx.err(); return toast('❌ Немає енергії'); }
+  state.coins -= s.p; state.energy -= 5;
+  state.farm[i] = {seedId:s.id, at:Date.now(), t:Math.max(5,Math.round(s.t*growMul(i)))};
+  state.stats.planted++;
+  qProg('plant'); checkAch('first_plant');
+  toast(`🌱 ${s.n}`);
+  sfx.plant(); save(); render();
 }
 
-function harvest(i){
-  const cell=state.farm[i]; if(!cell) return;
-  const s=SEEDS.find(x=>x.id===cell.seedId);
-  if(!s){ state.farm[i]=null; render(); return; }
-  let r=s.r;
-  if(state.transport.tractor) r=Math.floor(r*1.2);
-  state.coins+=r; state.xp+=s.xp; state.farm[i]=null;
-  state.inv[s.id]=(state.inv[s.id]||0)+1;
-  state.stats.harvested++; state.stats.earned+=r;
-  qProg('harvest'); qProg('coins',r);
-  checkAch('harvest_50'); checkAch('harvest_200'); checkAch('rich_1k'); checkAch('rich_10k');
-  levelUp(); toast(`🎉 +${r}🪙 +${s.xp}XP`); sfx.harvest(); save(); saveRating(); render();
+function harvest(i) {
+  const cell = state.farm[i];
+  if (!cell) return;
+  const s = SEEDS.find(x=>x.id===cell.seedId);
+  if (!s) { state.farm[i]=null; render(); return; }
+  let r = s.r*yieldMul(i)*0.4;
+  if (state.transport.tractor) r *= 1.2;
+  let q = 1; if (state.clover) { q = 2; state.clover = false; }
+  r = Math.floor(r)*q;
+  const ev = curEvent(), xg = Math.floor(s.xp*(ev?ev.xp:1)*(1+(state.inv.scarecrow>0?0.05:0)))*q;
+  state.coins += r; state.xp += xg;
+  state.farm[i] = null;
+  state.inv[s.id] = (state.inv[s.id]||0)+q;
+  state.stats.harvested += q; state.stats.earned += r;
+  qProg('harvest',q); qProg('coins',r); chProg('harvest',q,s.id); collect(s.id);
+  checkAch('harvest_50'); checkAch('rich_1k');
+  levelUp();
+  toast(`🎉 +${r}🪙 + ${xg}XP${q>1?' (×2 🍀)':''}`);
+  sfx.harvest(); save(); saveRating(); render();
+}
+function harvestAll(){ let n=0; for(let i=0;i<state.unlocked;i++){ const c=state.farm[i]; if(c&&(Date.now()-c.at)/1000>=c.t){ harvest(i); n++; } } if(!n) toast('Нічого збирати'); }
+function applyItem(i){
+  const c=state.farm[i]; if(!c||!armed) return;
+  const el=(Date.now()-c.at)/1000;
+  if(armed==='speed_seed') c.at-=c.t*1000; else c.at-=(c.t-el)*0.25*1000;
+  state.inv[armed]--; if(state.inv[armed]<=0) delete state.inv[armed];
+  armed=null; sfx.buy(); toast('✨ Готово!'); save(); render();
+}
+function waterPlot(i){
+  const c=state.farm[i];
+  if(!c||c.w) return toast('⏳ Ще росте...');
+  if(state.water<10) return toast('💧 Мало води');
+  const el=(Date.now()-c.at)/1000;
+  c.at-=(c.t-el)*(state.inv.watering_can>0?0.25:0.15)*1000;
+  c.w=1; state.water-=10; sfx.plant(); toast('💧 Полито!'); save(); render();
+}
+function eggGame(){
+  const left0=600-(Date.now()-(state.mgAt||0))/1000;
+  if(left0>0) return toast('⏳ Ще '+fmtT(left0));
+  state.mgAt=Date.now(); let sc=0,left=15;
+  document.getElementById('modal').innerHTML='<h3>🥚 Злови яйце! <span id="mgL">15</span>с • <span id="mgS">0</span></h3><div id="arena" style="position:relative;height:260px;background:rgba(0,0,0,.25);border-radius:14px;overflow:hidden"></div><p style="text-align:center;font-size:11px;color:var(--dim);margin-top:6px">💣 віднімає очки</p>';
+  document.getElementById('modalBg').classList.add('open');
+  const ar=document.getElementById('arena');
+  const sp=setInterval(()=>{
+    const e=document.createElement('span'); e.textContent=Math.random()<.15?'💣':'🥚';
+    e.style.cssText='position:absolute;top:-30px;left:'+(Math.random()*85)+'%;font-size:30px;transition:top 2.2s linear';
+    e.onpointerdown=()=>{ if(e.textContent==='🥚'){sc++;sfx.coin();}else{sc=Math.max(0,sc-2);sfx.err();} e.remove(); const o=document.getElementById('mgS'); if(o)o.textContent=sc; };
+    ar.appendChild(e); setTimeout(()=>{e.style.top='240px';},30); setTimeout(()=>e.remove(),2300);
+  },450);
+  const tm=setInterval(()=>{
+    left--; const l=document.getElementById('mgL'); if(l)l.textContent=left;
+    if(left<=0){ clearInterval(tm); clearInterval(sp);
+      const c=sc*4, en=Math.min(state.maxEnergy-state.energy,Math.floor(sc/2));
+      state.coins+=c; state.energy+=en; state.stats.earned+=c; qProg('coins',c);
+      toast(`🥚 ${sc} яєць: +${c}🪙 +${en}⚡`);
+      document.getElementById('modalBg').classList.remove('open'); save(); render(); }
+  },1000);
 }
 
-/* SHOP */
-function renderShop(){
-  const tabs=document.getElementById('shopTabs'); tabs.innerHTML='';
+// SHOP
+function renderShop() {
+  const tabs = document.getElementById('shopTabs');
+  tabs.innerHTML = '';
   SHOP_CATS.forEach((c,i)=>{
-    const d=document.createElement('div');
-    d.className='tab'+(i===0?' active':'');
-    d.textContent=c.n;
-    d.onclick=()=>{ tabs.querySelectorAll('.tab').forEach(t=>t.classList.remove('active')); d.classList.add('active'); renderShopItems(c.id); sfx.click(); };
+    const d = document.createElement('div');
+    d.className = 'tab'+(c.id===curShop?' active':'');
+    d.textContent = c.n;
+    d.onclick = ()=>{
+      tabs.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+      d.classList.add('active');
+      curShop=c.id; renderShopItems(c.id); sfx.click();
+    };
     tabs.appendChild(d);
   });
-  renderShopItems('seeds');
+  renderShopItems(curShop);
 }
 
-function renderShopItems(cat){
-  const box=document.getElementById('shopItems'); box.innerHTML='';
+function renderShopItems(cat) {
+  if (cat==='market') { renderMarket(); return; }
+  const box = document.getElementById('shopItems');
+  box.innerHTML = '';
   (SHOP[cat]||[]).forEach(it=>{
-    const d=document.createElement('div'); d.className='card';
-    d.innerHTML=`<div class="card-ico">${it.e}</div><div class="card-info"><h4>${it.n}</h4><p>${it.desc||''}</p></div><button class="btn-p">🪙${it.p}</button>`;
-    d.querySelector('button').onclick=()=>buy(it.id,it.p,it.n);
+    const d = document.createElement('div');
+    d.className = 'card';
+    d.innerHTML = `<div class="card-icon">${it.e}</div><div class="card-info"><h4>${it.n}</h4><p>${it.desc||''}</p></div><button class="btn-price">🪙 ${it.p}</button>`;
+    d.querySelector('button').onclick = ()=>buy(it.id,it.p,it.n);
     box.appendChild(d);
   });
 }
 
-function buy(id,p,n){
-  if(state.coins<p){ sfx.err(); return toast('❌ Не вистачає'); }
-  state.coins-=p; state.inv[id]=(state.inv[id]||0)+1;
-  if(id==='energy_drink'){ state.energy=Math.min(state.maxEnergy,state.energy+25); state.inv[id]--; if(state.inv[id]<=0) delete state.inv[id]; }
-  if(id==='well'){ state.water+=50; state.inv[id]--; if(state.inv[id]<=0) delete state.inv[id]; }
-  if(id==='xp_boost'){ state.xp+=50; state.inv[id]--; if(state.inv[id]<=0) delete state.inv[id]; levelUp(); }
-  toast(`✅ ${n}`); sfx.buy(); save(); render();
+function buy(id,p,n) {
+  if (state.coins < p) { sfx.err(); return toast('❌ Не вистачає'); }
+  state.coins -= p;
+  state.inv[id] = (state.inv[id]||0)+1;
+  if (id==='energy_drink') {
+    state.energy = Math.min(state.maxEnergy, state.energy+25);
+    state.inv[id]--; if(state.inv[id]<=0) delete state.inv[id];
+  }
+  if (id==='well') {
+    state.water += 50;
+    state.inv[id]--; if(state.inv[id]<=0) delete state.inv[id];
+  }
+  toast(`✅ ${n}`);
+  sfx.buy(); save(); render();
 }
 
-function renderInv(){
-  const g=document.getElementById('inv'); g.innerHTML='';
-  const all=[...SEEDS,...SHOP.tools,...SHOP.boosts,...SHOP.decor];
+function renderInv() {
+  const g = document.getElementById('inv');
+  g.innerHTML = '';
+  const all = [...SEEDS,...SHOP.tools,...SHOP.boosts,...SHOP.decor];
   let has=false;
   Object.entries(state.inv).forEach(([id,c])=>{
-    if(c<=0) return; const it=all.find(x=>x.id===id); if(!it) return; has=true;
-    const d=document.createElement('div'); d.className='inv-slot';
-    d.innerHTML=`<span class="e">${it.e}</span><span class="c">×${c}</span>`;
-    d.onclick=()=>itemModal(it,c); g.appendChild(d);
+    if(c<=0) return;
+    const it = all.find(x=>x.id===id);
+    if(!it) return;
+    has=true;
+    const d = document.createElement('div');
+    d.className='inv-slot';
+    d.innerHTML = `<span class="e">${it.e}</span><span class="c">× ${c}</span>`;
+    d.onclick = ()=>itemModal(it,c);
+    g.appendChild(d);
   });
   if(!has) g.innerHTML='<div style="grid-column:1/-1;text-align:center;color:var(--dim);padding:18px;font-size:13px">Порожньо</div>';
 }
 
-function sellAll(){
-  const all=[...SEEDS,...SHOP.tools,...SHOP.boosts,...SHOP.decor];
+function sellAll() {
   let tot=0;
-  Object.entries(state.inv).forEach(([id,c])=>{
-    const it=all.find(x=>x.id===id); if(!it) return;
-    tot+=Math.floor((it.p||10)*0.6)*c;
-  });
+  SEEDS.forEach(s=>{ const c=state.inv[s.id]||0; if(c>0){ tot+=Math.floor(s.r*0.6)*c; delete state.inv[s.id]; } });
   if(tot<=0) return toast('Немає чого продавати');
-  state.inv={}; state.coins+=tot; state.stats.earned+=tot;
-  toast(`💰 +${tot}🪙`); sfx.coin(); save(); render();
+  state.coins+=tot; state.stats.earned+=tot; qProg('coins',tot); checkAch('rich_1k');
+  toast(`💰 +${tot}🪙`);
+  sfx.coin(); save(); render();
 }
 
-/* ANIMALS */
-function renderAnimals(){
-  const g=document.getElementById('animals'); g.innerHTML='';
+// ANIMALS
+function renderAnimals() {
+  const g = document.getElementById('animals');
+  g.innerHTML='';
   ANIMALS.forEach(a=>{
-    const own=state.animals[a.id]; const lock=state.level<a.u&&!own;
-    const d=document.createElement('div'); d.className='animal'+(lock?' locked':'');
+    const own=state.animals[a.id];
+    const lock=state.level<a.u && !own;
+    const d=document.createElement('div');
+    d.className='animal'+(lock?' locked':'');
     let st='';
     if(lock) st=`🔒 Lv.${a.u}`;
-    else if(own){ const el=(Date.now()-(own.lastCollect||0))/1000; st=el>=a.i?'✅ Забери!':'⏳ '+fmtT(a.i-el); }
-    else st=`🪙 ${a.p}`;
+    else if(own){
+      const el=(Date.now()-(own.lastCollect||0))/1000;
+      st = el>=a.i ? '✅ Забери!' : '⏳ '+fmtT(a.i-el);
+    } else st=`🪙 ${a.p}`;
     d.innerHTML=`<span class="e">${a.e}</span><h4>${a.n}</h4><div class="st">${st}</div><div class="pr">${a.pr}</div>`;
-    d.onclick=()=>{ if(lock) return toast(`🔒 Рівень ${a.u}`); if(!own) return buyAnimal(a); collectAnimal(a); };
+    d.onclick=()=>{
+      if(lock) return toast(`🔒 Рівень ${a.u}`);
+      if(!own) return buyAnimal(a);
+      collectAnimal(a);
+    };
     g.appendChild(d);
   });
 }
 
-function buyAnimal(a){
-  if(state.coins<a.p){ sfx.err(); return toast('❌ Не вистачає'); }
-  state.coins-=a.p; state.animals[a.id]={owned:true,lastCollect:Date.now()};
-  state.stats.boughtAnimals=(state.stats.boughtAnimals||0)+1;
-  qProg('buy_animal'); checkAch('animal_lover');
-  toast(`🎉 ${a.n}`); sfx.buy(); save(); render();
+function buyAnimal(a) {
+  if(state.coins<a.p){sfx.err();return toast('❌ Не вистачає');}
+  state.coins-=a.p;
+  state.animals[a.id]={owned:true,lastCollect:Date.now()};
+  checkAch('animal_lover'); chProg('buyAnimal'); collect(a.id);
+  toast(`🎉 ${a.n}`);
+  sfx.buy(); save(); render();
 }
 
-function collectAnimal(a){
-  const o=state.animals[a.id]; if(!o) return;
+function collectAnimal(a) {
+  const o=state.animals[a.id];
+  if(!o) return;
   const el=(Date.now()-(o.lastCollect||0))/1000;
   if(el<a.i) return toast('⏳ Ще не готово');
-  state.coins+=a.r; state.xp+=Math.floor(a.r/4); o.lastCollect=Date.now();
+  state.coins+=a.r; state.xp+=Math.floor(a.r/4);
+  o.lastCollect=Date.now();
   state.stats.animals++; state.stats.earned+=a.r;
-  qProg('animal'); qProg('coins',a.r); levelUp();
-  toast(`🎉 +${a.r}🪙`); sfx.animal(); save(); saveRating(); render();
+  qProg('animal'); qProg('coins',a.r); chProg('animal');
+  levelUp();
+  toast(`🎉 +${a.r}🪙`);
+  sfx.animal(); save(); saveRating(); render();
 }
 
-function renderTransport(){
-  const l=document.getElementById('transport'); l.innerHTML='';
+function renderTransport() {
+  const l=document.getElementById('transport');
+  l.innerHTML='';
   TRANSPORT.forEach(t=>{
     const own=state.transport[t.id];
-    const d=document.createElement('div'); d.className='card';
-    d.innerHTML=`<div class="card-ico">${t.e}</div><div class="card-info"><h4>${t.n} ${own?'✅':''}</h4><p>${t.d}</p><div class="progress"><div style="width:${t.s}%"></div></div></div>${!own?`<button class="btn-p">🪙${t.p}</button>`:''}`;
+    const d=document.createElement('div');
+    d.className='card';
+    const btn = own ? '' : `<button class="btn-price">🪙${t.p}</button>`;
+    d.innerHTML=`<div class="card-icon">${t.e}</div><div class="card-info"><h4>${t.n} ${own?'✅':''}</h4><p>${t.d}</p><div class="progress"><div style="width:${t.s}%"></div></div></div>${btn}`;
     if(!own) d.querySelector('button').onclick=()=>{
-      if(state.coins<t.p){ sfx.err(); return toast('❌ Не вистачає'); }
-      state.coins-=t.p; state.transport[t.id]=true;
+      if(state.coins<t.p){sfx.err();return toast('❌ Не вистачає');}
+      state.coins-=t.p; state.transport[t.id]=true; collect(t.id);
       toast(`🎉 ${t.n}`); sfx.buy(); save(); render();
     };
     l.appendChild(d);
   });
 }
 
-/* QUESTS */
-function setQTab(el,ty){
+// QUESTS RENDER
+function setQTab(el,ty) {
   document.querySelectorAll('#sec-quests .tab').forEach(t=>t.classList.remove('active'));
-  el.classList.add('active'); renderQ(ty); sfx.click();
+  el.classList.add('active');
+  renderQ(ty); sfx.click();
 }
 
-function renderQ(ty='daily'){
-  const box=document.getElementById('quests'); if(!box) return;
+let curQTab = 'daily';
+function renderQ(ty) {
+  if (ty) curQTab = ty;
+  ty = curQTab;
+  const box=document.getElementById('quests');
+  if(!box) return;
   if(ty==='ach'){
     box.innerHTML=ACH.map(a=>{
       const done=state.ach[a.id];
-      return `<div class="card" style="opacity:${done?1:0.5}"><div class="card-ico">${a.e}</div><div class="card-info"><h4>${a.n} ${done?'✅':''}</h4><p>${a.d}</p></div></div>`;
+      return `<div class="card" style="opacity:${done?1:0.5}"><div class="card-icon">${a.e}</div><div class="card-info"><h4>${a.n} ${done?'✅':''}</h4><p>${a.d}</p></div></div>`;
     }).join('');
+    return;
+  }
+  if(ty==='ch'){
+    box.innerHTML=CH.map(c=>{
+      const p=Math.min(state.chP[c.id]||0,c.t), cl=state.ch[c.id+'_c'], ok=p>=c.t&&!cl;
+      return `<div class="card"><div class="card-icon">${c.per==='d'?'📅':'🗓️'}</div><div class="card-info"><h4>${c.n}</h4><p>${c.per==='d'?'За добу':'За тиждень'} • ${p}/${c.t} • ${c.r}🪙</p><div class="progress"><div style="width:${(p/c.t)*100}%"></div></div></div><button class="btn-price" ${ok?'':'disabled'} onclick="claimCH('${c.id}')">${cl?'✅':ok?'Забрати':'...'}</button></div>`;
+    }).join('');
+    return;
+  }
+  if(ty==='col'){
+    const all=[...SEEDS,...ANIMALS,...TRANSPORT].filter(x=>!x.ev), n=all.filter(x=>state.col[x.id]).length;
+    const wk=Object.keys(state.hist).sort().slice(-7).reduce((a,k)=>a+state.hist[k],0);
+    box.innerHTML=`<div class="card" style="flex-direction:column;text-align:center"><h4>📖 ${n}/${all.length}</h4><div class="progress" style="width:100%"><div style="width:${n/all.length*100}%"></div></div><p>Повна колекція = +5000🪙</p><p>💰 Сьогодні: ${state.hist[dayKey()]||0} • 7 днів: ${wk}</p></div><div class="inv-grid">`+all.map(x=>`<div class="inv-slot" style="opacity:${state.col[x.id]?1:0.25}"><span class="e">${x.e}</span></div>`).join('')+`</div>`;
     return;
   }
   box.innerHTML=QUESTS.map(q=>{
     const p=Math.min(state.qProg[q.id]||0,q.t);
     const claimed=state.quests[q.id+'_c'];
-    const ready=p>=q.t&&!claimed;
-    return `<div class="card"><div class="card-ico">📜</div><div class="card-info"><h4>${q.n}</h4><p>${p}/${q.t} • ${q.r}🪙</p><div class="progress"><div style="width:${(p/q.t)*100}%"></div></div></div><button class="btn-p" ${ready?'':'disabled'} style="${claimed?'background:#555;color:#aaa':''}" onclick="claimQ('${q.id}')">${claimed?'✅':ready?'Забрати':'...'}</button></div>`;
+    const ready=p>=q.t && !claimed;
+    return `<div class="card"><div class="card-icon">📜</div><div class="card-info"><h4>${q.n}</h4><p>${p}/${q.t} • ${q.r}🪙</p><div class="progress"><div style="width:${(p/q.t)*100}%"></div></div></div><button class="btn-price" ${ready?'':'disabled'} style="${claimed?'background:#555;color:#aaa':''}" onclick="claimQ('${q.id}')">${claimed?'✅':ready?'Забрати':'...'}</button></div>`;
   }).join('');
 }
 
-/* RATING */
-function setRTab(el,ty){
+// RATING
+function setRTab(el,ty) {
   document.querySelectorAll('#sec-rating .tab').forEach(t=>t.classList.remove('active'));
-  el.classList.add('active'); renderRating(ty); sfx.click();
+  el.classList.add('active');
+  renderRating(ty); sfx.click();
 }
 
-async function renderRating(ty='players'){
+async function renderRating(ty='players') {
   const box=document.getElementById('rating');
-  if(ty==='clans'){
-    box.innerHTML=`<div class="clan-box"><div style="font-size:42px">🏰</div><h3 style="color:var(--purple);font-family:Comfortaa;margin:6px 0">${state.clan||'Без клану'}</h3><p style="color:var(--dim);font-size:12px">${state.clan?'Твій клан':'Скоро з\'являться!'}</p></div>`;
-    return;
-  }
+  if(ty==='clans'){ await renderClans(box); return; }
   let list=[];
   if(fbReady&&db){
     try{
-      const q=fb.query(fb.ref(db,'rating'),fb.orderByChild('xp'),fb.limitToLast(30));
+      const q=fb.query(fb.ref(db,'rating'),fb.orderByChild('xp'),fb.limitToLast(25));
       const snap=await Promise.race([fb.get(q),new Promise((_,r)=>setTimeout(r,2000))]);
-      if(snap.exists()){ snap.forEach(c=>list.push({id:c.key,...c.val()})); list.sort((a,b)=>(b.xp||0)-(a.xp||0)); }
+      if(snap.exists()){ snap.forEach(c=>{ list.push({id:c.key,...c.val()}); }); list.sort((a,b)=>(b.xp||0)-(a.xp||0)); }
     }catch(e){}
   }
   const myName=document.getElementById('name').textContent;
-  if(!list.some(p=>p.id===uid)) list.push({id:uid,name:myName,level:state.level,xp:state.xp});
+  if(!list.some(p=>p.id===uid)) list.push({id:uid,name:myName,photo:tgPhoto||'',level:state.level,xp:state.xp});
   list.sort((a,b)=>(b.xp||0)-(a.xp||0));
-  if(list.length===0) list=[{id:uid,name:myName,level:state.level,xp:state.xp},{name:'Оксана',level:5,xp:320},{name:'Тарас',level:4,xp:250}];
   const myPos=list.findIndex(p=>p.id===uid)+1;
   box.innerHTML=`<div style="text-align:center;margin-bottom:10px;font-size:13px;color:var(--dim)">Твоя позиція: <b style="color:var(--accent)">#${myPos||'—'}</b></div>`+
-    list.slice(0,25).map((p,i)=>{
+    list.slice(0,20).map((p,i)=>{
       const me=p.id===uid;
-      const tc=i===0?' t1':i===1?' t2':i===2?' t3':'';
-      return `<div class="rating-item${tc}${me?' me':''}"><div class="pos">${i+1}</div><div class="r-name">${p.name||'Гравець'}${me?' (Ти)':''} <span style="font-size:11px;color:var(--dim)">Lv.${p.level||1}</span></div><div class="r-score">${fmt(p.xp||0)} XP</div></div>`;
+      const tc=i===0?' top1':i===1?' top2':i===2?' top3':'';
+      return `<div class="rating-item${tc}${me?' me':''}"><div class="pos">${i+1}</div>${p.photo?`<img src="${p.photo}" alt="" onerror="this.remove()">`:''}<div class="r-name">${p.name||'Гравець'}${me?' (Ти)':''} <span style="font-size:11px;color:var(--dim)">Lv. ${p.level||1}</span></div><div class="r-score">${fmt(p.xp||0)} XP</div></div>`;
     }).join('');
 }
 
-/* MODAL */
-function itemModal(it,c){
-  const price=Math.floor((it.p||10)*0.6);
-  document.getElementById('modal').innerHTML=`<h3>${it.e} ${it.n}</h3><p style="text-align:center;color:var(--dim);margin-bottom:14px">×${c}</p><div style="text-align:center"><button class="btn btn-o" id="sellOne">Продати 🪙${price}</button></div>`;
-  document.getElementById('sellOne').onclick=()=>{
+// MODAL
+function itemModal(it,c) {
+  const crop=SEEDS.some(x=>x.id===it.id), price=Math.floor((it.r||0)*0.6);
+  const use={fertilizer:'🧪 Використати',speed_seed:'⏰ Використати',lucky_clover:'🍀 Використати'}[it.id];
+  document.getElementById('modal').innerHTML=`<h3>${it.e} ${it.n}</h3><p style="text-align:center;color:var(--dim);margin-bottom:14px">× ${c}<br>${it.desc||''}</p><div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">${use?`<button class="btn btn-green" id="useIt">${use}</button>`:''}${crop?`<button class="btn btn-orange" id="sellOne">Продати 🪙${price}</button><button class="btn btn-green" id="listIt">🤝 На ринок</button>`:''}</div>`;
+  const close=()=>document.getElementById('modalBg').classList.remove('open');
+  const u=document.getElementById('useIt');
+  if(u) u.onclick=()=>{ close();
+    if(it.id==='lucky_clover'){ state.inv[it.id]--; if(state.inv[it.id]<=0) delete state.inv[it.id]; state.clover=true; toast('🍀 Наступний збір ×2'); save(); render(); }
+    else { armed=it.id; toast('👆 Тапни по грядці, що росте'); } };
+  const so=document.getElementById('sellOne');
+  if(so) so.onclick=()=>{
     if(!state.inv[it.id]||state.inv[it.id]<=0) return;
     state.inv[it.id]--; if(state.inv[it.id]<=0) delete state.inv[it.id];
-    state.coins+=price; state.stats.earned+=price;
-    toast(`💰 +${price}🪙`); sfx.coin();
+    state.coins+=price; state.stats.earned+=price; qProg('coins',price);
+    toast(`💰 +${price}🪙`); sfx.coin(); close(); save(); render(); };
+  const li=document.getElementById('listIt'); if(li) li.onclick=()=>listModal(it);
+  document.getElementById('modalBg').classList.add('open');
+}
+function listModal(it){
+  const c=state.inv[it.id]||0, inp='style="flex:1;padding:8px;border-radius:10px;border:none;width:100%"';
+  document.getElementById('modal').innerHTML=`<h3>🤝 ${it.e} ${it.n}</h3><p style="text-align:center;color:var(--dim)">Є: ${c} • комісія 5%</p><div style="display:flex;gap:8px;margin:12px 0"><input id="lq" type="number" min="1" max="${c}" value="1" ${inp}><input id="lp" type="number" min="1" value="${Math.floor(it.r*0.8)}" ${inp}></div><p style="text-align:center;font-size:11px;color:var(--dim)">кількість • загальна ціна 🪙</p><div style="text-align:center;margin-top:8px"><button class="btn btn-green" id="lgo">Виставити</button></div>`;
+  document.getElementById('lgo').onclick=async()=>{
+    const q=Math.floor(+document.getElementById('lq').value), pr=Math.floor(+document.getElementById('lp').value);
+    if(!(q>=1&&q<=(state.inv[it.id]||0))||!(pr>=1&&pr<=99999)) return toast('❌ Невірні дані');
+    if(!fbReady||!db) return toast('📴 Потрібен інтернет');
+    state.inv[it.id]-=q; if(state.inv[it.id]<=0) delete state.inv[it.id];
+    try{ await fb.set(fb.push(fb.ref(db,'market')),{s:uid,n:document.getElementById('name').textContent,c:it.id,q,p:pr,t:Date.now()}); toast('✅ Виставлено'); }
+    catch(e){ state.inv[it.id]=(state.inv[it.id]||0)+q; toast('❌ Помилка'); }
     document.getElementById('modalBg').classList.remove('open'); save(); render();
+  };
+}
+async function renderMarket(){
+  const box=document.getElementById('shopItems'), dim='style="text-align:center;color:var(--dim);padding:12px;font-size:12px"';
+  if(!fbReady||!db){ box.innerHTML=`<p ${dim}>📴 Потрібен інтернет</p>`; return; }
+  let list=[];
+  try{ const snap=await Promise.race([fb.get(fb.query(fb.ref(db,'market'),fb.orderByChild('t'),fb.limitToLast(30))),new Promise((_,r)=>setTimeout(r,3000))]);
+    if(snap.exists()) snap.forEach(c=>{ list.push({id:c.key,...c.val()}); }); }catch(e){}
+  list.reverse();
+  box.innerHTML=`<p ${dim}>Щоб виставити — відкрий культуру в інвентарі</p>`+(list.length?'':`<p ${dim}>Поки порожньо</p>`);
+  list.forEach(l=>{
+    const s=SEEDS.find(x=>x.id===l.c); if(!s) return;
+    const mine=l.s===uid, d=document.createElement('div'); d.className='card';
+    d.innerHTML=`<div class="card-icon">${s.e}</div><div class="card-info"><h4>${s.n} × ${l.q}</h4><p>${mine?'Твоє':(l.n||'Гравець')}</p></div><button class="btn-price">${mine?'Зняти':'🪙 '+l.p}</button>`;
+    d.querySelector('button').onclick=()=>mine?takeListing(l):buyListing(l);
+    box.appendChild(d);
+  });
+}
+async function claimListing(l){
+  let got=null;
+  try{ const r=await fb.runTransaction(fb.ref(db,'market/'+l.id),cur=>{ got=cur; return cur?null:undefined; }); return (r.committed&&got)?got:null; }catch(e){ return null; }
+}
+async function buyListing(l){
+  if(state.coins<l.p){ sfx.err(); return toast('❌ Не вистачає'); }
+  const got=await claimListing(l);
+  if(!got){ toast('😕 Вже продано'); return renderMarket(); }
+  state.coins-=got.p; state.inv[got.c]=(state.inv[got.c]||0)+got.q;
+  try{ await fb.set(fb.push(fb.ref(db,'mail/'+got.s)),{c:Math.floor(got.p*0.95),t:Date.now()}); }catch(e){}
+  toast('✅ Куплено'); sfx.buy(); save(); render(); renderMarket();
+}
+async function takeListing(l){
+  const got=await claimListing(l); if(!got) return renderMarket();
+  state.inv[got.c]=(state.inv[got.c]||0)+got.q; toast('↩️ Знято'); save(); render(); renderMarket();
+}
+async function checkMail(){
+  if(!fbReady||!db) return;
+  try{ const ms=await fb.get(fb.ref(db,'mail/'+uid)); if(!ms.exists()) return;
+    let add=0; ms.forEach(c=>{ add+=(c.val().c||0); });
+    await fb.set(fb.ref(db,'mail/'+uid),null);
+    if(add>0){ state.coins+=add; state.stats.earned+=add; toast(`🤝 Продаж на ринку +${add}🪙`); save(); render(); }
+  }catch(e){}
+}
+// CLANS
+function score(){ return state.level*state.level*50+state.xp; }
+async function renderClans(box){
+  if(!fbReady||!db){ box.innerHTML='<div class="card" style="justify-content:center">📴 Потрібен інтернет</div>'; return; }
+  let list=[];
+  try{ const snap=await Promise.race([fb.get(fb.ref(db,'clans')),new Promise((_,r)=>setTimeout(r,3000))]);
+    if(snap.exists()) snap.forEach(c=>{ const m=(c.val().m)||{}, ids=Object.keys(m); list.push({id:c.key,n:ids.length,sc:ids.reduce((a,k)=>a+(m[k]||0),0)}); }); }catch(e){}
+  list.sort((a,b)=>b.sc-a.sc);
+  box.innerHTML=(state.clan?`<div class="card" style="flex-direction:column;text-align:center"><div style="font-size:36px">🏰</div><h4>${state.clan}</h4><button class="btn btn-orange" onclick="leaveClan()">Вийти з клану</button></div>`:`<button class="btn btn-green" style="width:100%;margin-bottom:10px" onclick="clanModal()">➕ Створити клан (500🪙)</button>`)
+    +list.slice(0,20).map((c,i)=>`<div class="rating-item${i<3?' top'+(i+1):''}"><div class="pos">${i+1}</div><div class="r-name">${c.id} <span style="font-size:11px;color:var(--dim)">👥${c.n}</span></div><div class="r-score">${fmt(c.sc)}</div>${state.clan?'':`<button class="btn-price" onclick="joinClan('${c.id}')">Вступити</button>`}</div>`).join('');
+}
+function clanModal(){
+  document.getElementById('modal').innerHTML='<h3>🏰 Новий клан</h3><div style="display:flex;gap:8px"><input id="cn" maxlength="16" placeholder="Назва (3–16)" style="flex:1;padding:8px;border-radius:10px;border:none"><button class="btn btn-green" id="cgo">Створити</button></div>';
+  document.getElementById('cgo').onclick=async()=>{
+    const n=document.getElementById('cn').value.replace(/[^\p{L}\p{N} _-]/gu,'').trim();
+    if(n.length<3) return toast('❌ Мінімум 3 символи');
+    if(state.coins<500) return toast('❌ Потрібно 500🪙');
+    try{ const ex=await fb.get(fb.ref(db,'clans/'+n)); if(ex.exists()) return toast('❌ Назва зайнята');
+      await fb.set(fb.ref(db,'clans/'+n),{o:uid,m:{[uid]:score()}}); state.coins-=500; state.clan=n; toast('🏰 Клан створено'); }
+    catch(e){ return toast('❌ Помилка'); }
+    document.getElementById('modalBg').classList.remove('open'); save(); render(); renderRating('clans');
   };
   document.getElementById('modalBg').classList.add('open');
 }
+async function joinClan(n){ try{ await fb.set(fb.ref(db,'clans/'+n+'/m/'+uid),score()); state.clan=n; toast('🏰 '+n); save(); renderRating('clans'); }catch(e){ toast('❌ Помилка'); } }
+async function leaveClan(){ try{ await fb.set(fb.ref(db,'clans/'+state.clan+'/m/'+uid),null); }catch(e){} state.clan=null; save(); renderRating('clans'); }
 function closeModal(e){ if(e.target.id==='modalBg') document.getElementById('modalBg').classList.remove('open'); }
 
-/* LEVEL */
-function levelUp(){
+// LEVEL
+function levelUp() {
   const need=state.level*100;
   if(state.xp>=need){
     state.level++; state.xp-=need;
     state.maxEnergy+=10; state.energy=state.maxEnergy;
-    if(state.level%2===0&&state.unlocked<12) state.unlocked=Math.min(12,state.unlocked+1);
-    toast(`🎉 Рівень ${state.level}!`); sfx.level();
-    checkAch('level_5'); checkAch('level_10');
+    if(state.level%2===0 && state.unlocked<12) state.unlocked=Math.min(12,state.unlocked+1);
+    toast(`🎉 Рівень ${state.level}!`);
+    sfx.level(); checkAch('level_5');
   }
 }
 
-/* UTILS */
+// UTILS
 function fmtT(s){ if(s<=0)return'0с'; const m=Math.floor(s/60),sec=Math.floor(s%60); return m>0?`${m}хв ${sec}с`:`${sec}с`; }
 function fmt(n){ if(n>=1e6)return(n/1e6).toFixed(1)+'M'; if(n>=1000)return(n/1000).toFixed(1)+'K'; return String(Math.floor(n)); }
 function toast(m){ const t=document.getElementById('toast'); t.textContent=m; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2000); }
@@ -1083,41 +1374,58 @@ function go(id,el){
   document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
   document.getElementById('sec-'+id).classList.add('active');
-  if(el) el.classList.add('active'); sfx.click();
+  if(el) el.classList.add('active');
+  sfx.click();
   if(id==='quests') renderQ();
   if(id==='rating') renderRating();
 }
 function toggleSound(){ const on=sfx.toggle(); state.settings.sound=on; document.getElementById('soundBtn').textContent=on?'🔊':'🔇'; saveLocal(); if(on)sfx.click(); }
 
-/* INIT */
-async function init(){
-  try{
-    if(window.Telegram?.WebApp){
-      Telegram.WebApp.ready(); Telegram.WebApp.expand();
-      Telegram.WebApp.setHeaderColor('#1e4d32'); Telegram.WebApp.setBackgroundColor('#1a3a2a');
-      const u=Telegram.WebApp.initDataUnsafe?.user;
-      if(u){ uid=String(u.id); document.getElementById('name').textContent=u.first_name||'Селянчик'; }
+// INIT
+async function init() {
+  try {
+    if (window.Telegram && window.Telegram.WebApp) {
+      Telegram.WebApp.ready();
+      Telegram.WebApp.expand();
+      Telegram.WebApp.setHeaderColor('#1e4d32');
+      Telegram.WebApp.setBackgroundColor('#1a3a2a');
+      const u = Telegram.WebApp.initDataUnsafe && Telegram.WebApp.initDataUnsafe.user;
+      if (u) {
+        uid=String(u.id); document.getElementById('name').textContent=u.first_name||'Селянчик';
+        tgPhoto=u.photo_url||null;
+        if (tgPhoto) document.getElementById('avatar').innerHTML=`<img src="${tgPhoto}" alt="" onerror="this.parentNode.textContent='👨‍🌾'">`;
+      }
+      startParam = (Telegram.WebApp.initDataUnsafe && Telegram.WebApp.initDataUnsafe.start_param) || '';
     }
-  }catch(e){}
-  if(!uid) uid='local_'+Date.now();
+  } catch(e){}
+  if (!uid) uid = 'local_'+Date.now();
 
   document.body.addEventListener('click',()=>{ sfx.init(); sfx.resume(); if(state.settings.music) sfx.startMusic(); },{once:true});
 
-  loadLocal(); ensure(); offline(); checkDaily(); initQ(); render();
-  document.getElementById('soundBtn').textContent=sfx.on?'🔊':'🔇';
+  loadLocal();
+  ensure();
+  offline();
+  checkDaily();
+  initQ();
+  render();
+  document.getElementById('soundBtn').textContent = sfx.on ? '🔊' : '🔇';
 
-  setTimeout(()=>document.getElementById('loading').classList.add('hide'),350);
+  setTimeout(()=>document.getElementById('loading').classList.add('hide'), 400);
 
-  initFB().then(async()=>{
-    if(fbReady){
-      const cloud=await loadCloud();
-      if(cloud){ ensure(); offline(); checkDaily(); initQ(); render(); toast('☁️ Прогрес з хмари'); }
+  initFB().then(async ()=>{
+    if (fbReady) {
+      const cloud = await loadCloud();
+      if (cloud) {
+        ensure(); offline(); checkDaily(); initQ(); render();
+        toast('☁️ Прогрес з хмари');
+      }
       badge(true);
+      refs(); checkMail();
     } else badge(false);
   });
 
-  setInterval(()=>{ renderFarm(); renderAnimals(); if(state.energy<state.maxEnergy){ state.energy=Math.min(state.maxEnergy,state.energy+1); renderRes(); } },5000);
-  setInterval(()=>{ save(); saveRating(); },30000);
+  setInterval(()=>{ renderFarm(); renderAnimals(); let ch=false; if(state.energy<state.maxEnergy){state.energy=Math.min(state.maxEnergy,state.energy+1);ch=true;} if(state.water<100){state.water++;ch=true;} if(ch)renderRes(); },5000);
+  setInterval(()=>{ save(); saveRating(); checkMail(); },30000);
 
   document.addEventListener('visibilitychange',()=>{
     if(document.visibilityState==='hidden'){ state.lastOnline=Date.now(); save(); saveLocal(); }
@@ -1128,7 +1436,7 @@ async function init(){
 
 window.go=go; window.setQTab=setQTab; window.setRTab=setRTab;
 window.closeModal=closeModal; window.claimDaily=claimDaily;
-window.claimQ=claimQ; window.sellAll=sellAll; window.toggleSound=toggleSound;
+window.claimQ=claimQ; window.harvestAll=harvestAll; window.eggGame=eggGame; window.clanModal=clanModal; window.joinClan=joinClan; window.leaveClan=leaveClan; window.claimCH=claimCH; window.invite=invite; window.sellAll=sellAll; window.toggleSound=toggleSound;
 
 init();
 </script>
