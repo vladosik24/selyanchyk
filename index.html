@@ -23,11 +23,14 @@
 
 body {
   font-family: 'Nunito', sans-serif;
-  background: linear-gradient(180deg, #1a3a2a 0%, #0f2418 100%);
   color: var(--text);
   min-height: 100vh;
   overflow-x: hidden;
   padding-bottom: 88px;
+  background:
+    linear-gradient(180deg, rgba(6, 22, 14, 0.82) 0%, rgba(4, 16, 10, 0.90) 100%),
+    url('bg-farm.png') center top / cover no-repeat fixed;
+  background-color: #06160e;
 }
 
 .header {
@@ -279,7 +282,21 @@ body {
 /* ===== SKIN: дерево + золото + трава ===== */
 :root{--gold:#f2c14e;--soil-img:none;--grass-img:none;--wood-img:none}
 /* Свої картинки: заміни none на url(soil.png) / url(grass.png) / url(wood.png) */
-body{background:linear-gradient(180deg,#0e3a2a,#082a1d)}
+
+/* Кнопки — анімації */
+.btn-price, .btn, .sound-btn, .nav-item, .seed, .plot, .animal, .tab, .res .plus {
+  transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+}
+.btn-price:active, .btn:active, .sound-btn:active, .seed:active, .animal:active, .tab:active, .res .plus:active {
+  transform: scale(0.92);
+  filter: brightness(1.1);
+}
+.btn-price:hover, .btn:hover {
+  box-shadow: 0 4px 14px rgba(255, 200, 50, 0.35);
+}
+.nav-item:active { transform: scale(0.94); }
+.plot:active { transform: scale(0.95); }
+
 .header{margin:8px 8px 0;padding:10px 12px;border:3px solid var(--gold);border-radius:22px;
   background:var(--wood-img),repeating-linear-gradient(95deg,rgba(0,0,0,.07) 0 3px,transparent 3px 9px),linear-gradient(180deg,#8f5e2c,#5c3818);
   box-shadow:0 0 0 2px #3b2208,0 6px 18px rgba(0,0,0,.5),inset 0 2px 0 rgba(255,255,255,.25)}
@@ -323,6 +340,7 @@ body{background:linear-gradient(180deg,#0e3a2a,#082a1d)}
 .rating-item.me{border-color:var(--gold)}
 .tab.active{border-color:#8bd36a;background:linear-gradient(180deg,#3f9a3a,#1f5f2a)}
 .modal{border-top:4px solid var(--gold);background:linear-gradient(180deg,#7a4f26,#4d3118)}
+
 </style>
 </head>
 <body>
