@@ -355,6 +355,16 @@ body {
 <div class="sync" id="sync">⏳</div>
 <div class="toast" id="toast"></div>
 
+<!-- Tutorial overlay -->
+<div id="tutorial" style="display:none;position:fixed;inset:0;z-index:500;background:rgba(0,0,0,0.65);align-items:flex-end;justify-content:center;padding:20px 16px 100px">
+  <div style="background:linear-gradient(180deg,#2d5a3f,#1a3a2a);border-radius:18px;padding:20px 16px;width:100%;max-width:360px;border:2px solid var(--accent);text-align:center;box-shadow:0 12px 40px rgba(0,0,0,0.5)">
+    <div id="tutEmoji" style="font-size:48px;margin-bottom:8px">🌱</div>
+    <h3 id="tutTitle" style="font-family:Comfortaa,sans-serif;font-size:17px;margin-bottom:8px">Ласкаво просимо!</h3>
+    <p id="tutText" style="font-size:14px;color:var(--dim);line-height:1.45;margin-bottom:16px">Посади першу культуру на вільну грядку.</p>
+    <button class="btn btn-green" style="width:100%" onclick="nextTutorial()">Зрозуміло</button>
+  </div>
+</div>
+
 <div class="header">
   <div class="header-left">
     <div class="avatar" id="avatar">👨‍🌾</div>
@@ -364,6 +374,7 @@ body {
     </div>
   </div>
   <div class="header-right">
+    <button class="sound-btn" id="settingsBtn" onclick="openSettings()" title="Налаштування">⚙️</button>
     <button class="sound-btn" id="soundBtn" onclick="toggleSound()">🔊</button>
     <div class="coins"><span class="coin-ico">🪙</span><div><small id="saveLbl">Збережено</small><b id="coins">0</b></div></div>
   </div>
@@ -515,24 +526,34 @@ const SEEDS = [
   {id:'potato',e:'🥔',n:'Картопля',p:12,t:35,r:30,xp:6,u:1},
   {id:'carrot',e:'🥕',n:'Морква',p:15,t:45,r:40,xp:8,u:1},
   {id:'corn',e:'🌽',n:'Кукурудза',p:20,t:60,r:50,xp:10,u:2},
+  {id:'cabbage',e:'🥬',n:'Капуста',p:28,t:75,r:65,xp:12,u:2},
   {id:'tomato',e:'🍅',n:'Помідор',p:35,t:90,r:80,xp:15,u:3},
+  {id:'pepper',e:'🌶️',n:'Перець',p:45,t:100,r:100,xp:20,u:4},
   {id:'sunflower',e:'🌻',n:'Соняшник',p:50,t:120,r:120,xp:25,u:4},
   {id:'strawberry',e:'🍓',n:'Полуниця',p:60,t:150,r:160,xp:30,u:5},
   {id:'watermelon',e:'🍉',n:'Кавун',p:80,t:180,r:200,xp:40,u:6},
+  {id:'blueberry',e:'🫐',n:'Чорниця',p:90,t:200,r:240,xp:48,u:7},
   {id:'grape',e:'🍇',n:'Виноград',p:100,t:240,r:280,xp:55,u:8},
+  {id:'olive',e:'🫒',n:'Оливка',p:120,t:270,r:320,xp:65,u:9},
   {id:'pumpkin',e:'🎃',n:'Гарбуз',p:150,t:300,r:400,xp:80,u:10},
+  {id:'truffle',e:'🍄',n:'Трюфель',p:220,t:360,r:550,xp:110,u:12},
+  {id:'dragonfruit',e:'🐉',n:'Драконів фрукт',p:350,t:420,r:900,xp:180,u:15},
   {id:'gold_pumpkin',e:'🏆',n:'Золотий гарбуз',p:200,t:200,r:900,xp:150,u:1,ev:true},
 ];
 
 const ANIMALS = [
   {id:'chicken',e:'🐔',n:'Курка',p:100,pr:'🥚 Яйця',i:60,r:30,u:1},
   {id:'duck',e:'🦆',n:'Качка',p:200,pr:'🪶 Пух',i:90,r:45,u:2},
+  {id:'rabbit',e:'🐰',n:'Кролик',p:250,pr:'🧤 Хутро',i:110,r:55,u:2},
   {id:'cow',e:'🐄',n:'Корова',p:500,pr:'🥛 Молоко',i:120,r:80,u:3},
   {id:'goat',e:'🐐',n:'Коза',p:350,pr:'🧀 Сир',i:140,r:90,u:3},
   {id:'sheep',e:'🐑',n:'Вівця',p:400,pr:'🧶 Вовна',i:150,r:100,u:4},
   {id:'pig',e:'🐷',n:'Свиня',p:300,pr:'🥓 Бекон',i:180,r:120,u:5},
+  {id:'turkey',e:'🦃',n:'Індичка',p:450,pr:'🍗 М\'ясо',i:160,r:110,u:5},
   {id:'bee',e:'🐝',n:'Бджоли',p:600,pr:'🍯 Мед',i:200,r:150,u:6},
   {id:'horse',e:'🐴',n:'Кінь',p:1000,pr:'🏇 Перегони',i:300,r:250,u:8},
+  {id:'peacock',e:'🦚',n:'Павич',p:1500,pr:'🪶 Перо',i:280,r:320,u:11},
+  {id:'dragon',e:'🐲',n:'Дракончик',p:5000,pr:'🔥 Полум\'я',i:600,r:1200,u:15},
 ];
 
 const TRANSPORT = [
@@ -742,7 +763,7 @@ function ensure() {
   if (!state.qProg) state.qProg = {};
   if (!state.quests) state.quests = {};
   if (!state.ach) state.ach = {};
-  if (!state.settings) state.settings = {sound:true,music:true};
+  if (!state.settings) state.settings = {sound:true, music:true, musicVol:0.5, sfxVol:0.8};
   if (!Array.isArray(state.plotLv)) state.plotLv = Array(12).fill(1);
   while (state.plotLv.length < 12) state.plotLv.push(1);
   if (!state.build) state.build = {};
@@ -751,6 +772,10 @@ function ensure() {
   if (!state.ch) state.ch = {};
   if (!state.chP) state.chP = {};
   if (typeof state.refClaimed !== 'number') state.refClaimed = 0;
+  if (!state.skin) state.skin = {avatar:'default', plot:'wood'};
+  if (!state.ownedSkins) state.ownedSkins = {avatar:['default'], plot:['wood']};
+  if (typeof state.tutorialStep !== 'number') state.tutorialStep = 0; // 0=not started, 1-4=steps, 5=done
+  if (!state.bp) state.bp = {season:1, xp:0, free:[], prem:[], hasPrem:false};
   sfx.on = state.settings.sound !== false;
   sfx.music = state.settings.music !== false;
 }
@@ -762,7 +787,18 @@ async function loadCloud() {
       fb.get(fb.ref(db, 'players/'+uid)),
       new Promise((_,rej)=>setTimeout(()=>rej(),2500))
     ]);
-    if (snap.exists()) { Object.assign(state, snap.val()); return true; }
+    if (!snap.exists()) return false;
+    const cloud = snap.val();
+    const cloudTime = cloud.lastOnline || 0;
+    const localTime = state.lastOnline || 0;
+    // Беремо новіший прогрес
+    if (cloudTime >= localTime) {
+      Object.assign(state, cloud);
+      return true;
+    }
+    // Локальний свіжіший — пушимо його в хмару
+    save();
+    return false;
   } catch(e){}
   return false;
 }
@@ -1399,6 +1435,137 @@ function go(id,el){
 }
 function toggleSound(){ const on=sfx.toggle(); state.settings.sound=on; document.getElementById('soundBtn').textContent=on?'🔊':'🔇'; saveLocal(); if(on)sfx.click(); }
 
+/* ===================== TUTORIAL ===================== */
+const TUT_STEPS = [
+  {e:'🌱', t:'Ласкаво просимо на ферму!', d:'Обери насіння внизу і натисни на вільну грядку (+), щоб посадити.'},
+  {e:'💧', t:'Полив і енергія', d:'Кожна посадка витрачає 5⚡. Енергія відновлюється сама з часом.'},
+  {e:'✅', t:'Збір урожаю', d:'Коли грядка засвітиться зеленим — натисни, щоб зібрати монети і XP.'},
+  {e:'🏪', t:'Магазин і тварини', d:'Продавай урожай, купуй тварин і транспорт. Вони дають пасивний дохід!'},
+];
+function showTutorial(){
+  if (state.tutorialStep >= 5) return;
+  const step = Math.max(0, state.tutorialStep);
+  if (step >= TUT_STEPS.length) { state.tutorialStep = 5; saveLocal(); return; }
+  const s = TUT_STEPS[step];
+  document.getElementById('tutEmoji').textContent = s.e;
+  document.getElementById('tutTitle').textContent = s.t;
+  document.getElementById('tutText').textContent = s.d;
+  document.getElementById('tutorial').style.display = 'flex';
+}
+function nextTutorial(){
+  state.tutorialStep = (state.tutorialStep || 0) + 1;
+  if (state.tutorialStep >= TUT_STEPS.length) {
+    state.tutorialStep = 5;
+    document.getElementById('tutorial').style.display = 'none';
+    toast('🎉 Туторіал пройдено! +50🪙');
+    state.coins += 50;
+    save(); renderH();
+  } else {
+    showTutorial();
+  }
+  saveLocal();
+}
+
+/* ===================== SETTINGS ===================== */
+function openSettings(){
+  const st = state.settings || {};
+  document.getElementById('modal').innerHTML = `
+    <h3>⚙️ Налаштування</h3>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <label style="display:flex;align-items:center;justify-content:space-between;font-size:14px">
+        <span>🔊 Звуки</span>
+        <input type="checkbox" id="setSound" ${st.sound!==false?'checked':''}>
+      </label>
+      <label style="display:flex;align-items:center;justify-content:space-between;font-size:14px">
+        <span>🎵 Музика</span>
+        <input type="checkbox" id="setMusic" ${st.music!==false?'checked':''}>
+      </label>
+      <div style="border-top:1px solid rgba(255,255,255,0.1);padding-top:10px">
+        <p style="font-size:12px;color:var(--dim);margin-bottom:8px">Скін аватара</p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap" id="skinAvatars">
+          ${['default','🎩','😎','🦸','🧙'].map(s=>`
+            <button class="btn ${state.skin?.avatar===s?'btn-green':'btn-orange'}" style="padding:8px 12px;font-size:18px"
+              onclick="buySkin('avatar','${s}')">${s==='default'?'👨‍🌾':s}</button>`).join('')}
+        </div>
+      </div>
+      <button class="btn btn-orange" style="width:100%;margin-top:8px" onclick="resetProgress()">🗑️ Скинути прогрес</button>
+      <button class="btn btn-green" style="width:100%" onclick="saveSettings()">Зберегти</button>
+    </div>`;
+  document.getElementById('modalBg').classList.add('open');
+}
+function saveSettings(){
+  state.settings.sound = document.getElementById('setSound').checked;
+  state.settings.music = document.getElementById('setMusic').checked;
+  sfx.on = state.settings.sound;
+  sfx.music = state.settings.music;
+  document.getElementById('soundBtn').textContent = sfx.on ? '🔊' : '🔇';
+  if (sfx.music && sfx.on) { sfx.started = false; sfx.startMusic(); }
+  document.getElementById('modalBg').classList.remove('open');
+  saveLocal(); toast('✅ Збережено');
+}
+function buySkin(type, id){
+  const prices = {avatar:{'default':0,'🎩':300,'😎':500,'🦸':800,'🧙':1200}, plot:{wood:0}};
+  const price = (prices[type]||{})[id] || 0;
+  const owned = (state.ownedSkins[type]||[]).includes(id);
+  if (!owned && price > 0) {
+    if (state.coins < price) return toast('❌ Не вистачає монет');
+    state.coins -= price;
+    state.ownedSkins[type] = state.ownedSkins[type] || [];
+    state.ownedSkins[type].push(id);
+  }
+  state.skin[type] = id;
+  if (type==='avatar' && id!=='default') {
+    document.getElementById('avatar').textContent = id;
+  } else if (type==='avatar') {
+    document.getElementById('avatar').textContent = '👨‍🌾';
+  }
+  toast(owned || price===0 ? '✅ Скін обрано' : `✅ Куплено за ${price}🪙`);
+  save(); renderH();
+  openSettings();
+}
+function resetProgress(){
+  if (!confirm('Скинути весь прогрес? Це незворотно.')) return;
+  localStorage.removeItem(localKey());
+  location.reload();
+}
+
+/* ===================== EVENTS (Firebase) ===================== */
+let activeEvents = [];
+async function loadEvents(){
+  if (!fbReady || !db) return;
+  try {
+    const snap = await Promise.race([
+      fb.get(fb.ref(db, 'events')),
+      new Promise((_,r)=>setTimeout(r, 2000))
+    ]);
+    if (!snap.exists()) return;
+    const now = Date.now();
+    activeEvents = [];
+    snap.forEach(c => {
+      const e = c.val();
+      if (e && e.start <= now && e.end >= now) activeEvents.push({id:c.key, ...e});
+    });
+    renderEventBanner();
+  } catch(e){}
+}
+function renderEventBanner(){
+  let el = document.getElementById('eventBanner');
+  if (!activeEvents.length) {
+    if (el) el.style.display = 'none';
+    return;
+  }
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'eventBanner';
+    el.className = 'banner';
+    const farm = document.getElementById('sec-farm');
+    if (farm) farm.insertBefore(el, farm.firstChild);
+  }
+  const e = activeEvents[0];
+  el.style.display = 'block';
+  el.innerHTML = `🎉 ${e.name || 'Подія'} — ${e.desc || 'Бонуси активні!'}`;
+}
+
 // INIT
 async function init() {
   try {
@@ -1428,7 +1595,10 @@ async function init() {
   render();
   document.getElementById('soundBtn').textContent = sfx.on ? '🔊' : '🔇';
 
-  setTimeout(()=>document.getElementById('loading').classList.add('hide'), 400);
+  setTimeout(()=>{
+    document.getElementById('loading').classList.add('hide');
+    if ((state.tutorialStep||0) < 5) setTimeout(showTutorial, 600);
+  }, 400);
 
   initFB().then(async ()=>{
     if (fbReady) {
@@ -1437,8 +1607,10 @@ async function init() {
         ensure(); offline(); checkDaily(); initQ(); render();
         toast('☁️ Прогрес з хмари');
       }
+      loadEvents();
       badge(true);
-      refs(); checkMail();
+      try { refs(); } catch(e){}
+      try { checkMail(); } catch(e){}
     } else badge(false);
   });
 
@@ -1455,6 +1627,8 @@ async function init() {
 window.go=go; window.setQTab=setQTab; window.setRTab=setRTab;
 window.closeModal=closeModal; window.claimDaily=claimDaily;
 window.claimQ=claimQ; window.harvestAll=harvestAll; window.eggGame=eggGame; window.clanModal=clanModal; window.joinClan=joinClan; window.leaveClan=leaveClan; window.claimCH=claimCH; window.invite=invite; window.sellAll=sellAll; window.toggleSound=toggleSound;
+window.nextTutorial=nextTutorial; window.openSettings=openSettings; window.saveSettings=saveSettings;
+window.buySkin=buySkin; window.resetProgress=resetProgress;
 
 init();
 </script>
